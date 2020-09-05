@@ -1,0 +1,15 @@
+{
+  "name": "quickscope-gui",
+  "version": "0.1.0",
+  "description": "Build Gradescope Autograders with Chalkbox (GUI)",
+  "main": "index.js",
+  "repository": "https://github.com/UQTools/quickscope",
+  "author": "Ella de Lore, Max Miller, Nicholas Lambourne",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "@material-ui/core": "^4.11.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}
