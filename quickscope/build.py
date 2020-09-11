@@ -26,4 +26,4 @@ def build() -> None:
         raise RuntimeError
 
     print(f"\u001b[1m\033[92mGUI Build Package Now Available at "
-          f"{str(Path('./playground/gui/dist').absolute())}\u001b[0m\u001b[0m")
+          f"{str(Path('./quickscope/gui/dist').absolute())}\u001b[0m\u001b[0m")
