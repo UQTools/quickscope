@@ -2,4 +2,4 @@
 
 cd /autograder/source
 
-java -jar chalkbox-all.jar config.yml
+{{ run_call }}

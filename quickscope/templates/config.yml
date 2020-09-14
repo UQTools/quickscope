@@ -5,12 +5,12 @@ assignment: {{ assignment_code }}
 submission: {{ submission_path }
 outputFile: {{ output_path }}
 dependencies: 
-{% dependencies %}
+{{ dependencies }}
 linterConfig: {{ linter_config }}} 
 resources: 
-{% resources %}
+{{ resources }}
 testDirectory: {{ test_directory }} 
 correctSolution: {{ correct_solution }} 
 faultySolutions: {{ faulty_solutions }}
 assessableTestClasses:
-{% assessable_test_classes %}
+{{ assessable_test_classes }}
