@@ -22,11 +22,13 @@ def produce_lib_directory(lib_directory: Path, bundle_directory: Path) -> None:
     copytree(f"{lib_directory}", f"{bundle_directory / 'lib'}")
 
 
-def produce_solution_directory(solution: Path, tests: Path, bundle_directory: Path) -> None:
+def produce_solution_directory(solution: Path, tests: Path, bundle_directory: Path,
+                               faulty_solutions: Path = None) -> None:
     solutions_directory = bundle_directory / "solution"
     mkdir(f"{solutions_directory}")
     copytree(f"{solution}", f"{solutions_directory / 'src'}")
     copytree(f"{tests}", f"{solutions_directory / 'test'}")
+    copytree(f"{faulty_solutions}", f"{solutions_directory / 'faulty'}")
 
 
 def produce_config_file(config: Dict[str, str], bundle_directory: Path) -> None:
