@@ -1,0 +1,16 @@
+engine: chalkbox.engines.{{ engine }}
+---
+courseCode: {{ course_code }}
+assignment: {{ assignment_code }}
+submission: {{ submission_path }
+outputFile: {{ output_path }}
+dependencies: 
+{% dependencies %}
+linterConfig: {{ linter_config }}} 
+resources: 
+{% resources %}
+testDirectory: {{ test_directory }} 
+correctSolution: {{ correct_solution }} 
+faultySolutions: {{ faulty_solutions }}
+assessableTestClasses:
+{% assessable_test_classes %}

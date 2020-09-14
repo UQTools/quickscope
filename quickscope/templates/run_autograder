@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+cd /autograder/source
+
+java -jar chalkbox-all.jar config.yml
