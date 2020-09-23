@@ -14,3 +14,8 @@ correctSolution: {{ correct_solution }}
 faultySolutions: {{ faulty_solutions }}
 assessableTestClasses:
 {{ assessable_test_classes }}
+stages:
+  - functionality: {{ functionality }}
+  - testing: {{ testing }}
+  - autostyle: {{ autostyle }}
+  - conformance: {{ conformance }}

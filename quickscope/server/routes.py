@@ -8,31 +8,31 @@ def home():
     return render_template("index.html")
 
 
-@app.route("upload_lib")
+@app.route("/upload_lib")
 def upload_lib():
     pass
 
 
-@app.route("upload_dependencies")
+@app.route("/upload_dependencies")
 def upload_dependencies():
     pass
 
 
-@app.route("upload_resources")
+@app.route("/upload_resources")
 def upload_resources():
     pass
 
 
-@app.route("upload_tests")
+@app.route("/upload_tests")
 def upload_tests():
     pass
 
 
-@app.route("upload_solution")
+@app.route("/upload_solution")
 def upload_solution():
     pass
 
 
-@app.route("upload_faulty_solutions")
+@app.route("/upload_faulty_solutions")
 def upload_faulty_solutions():
     pass
