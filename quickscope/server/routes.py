@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, request
 
 from . import app
 
@@ -36,3 +36,9 @@ def upload_solution():
 @app.route("/upload_faulty_solutions")
 def upload_faulty_solutions():
     pass
+
+
+@app.route("/upload", methods=["POST"])
+def upload():
+    print(request.data)
+    return "Hello, world"
