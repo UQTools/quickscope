@@ -4,12 +4,12 @@ import TextField from "@material-ui/core/TextField";
 import {DropzoneArea} from "material-ui-dropzone";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import {withStyles} from "@material-ui/core/styles";
-import { green } from '@material-ui/core/colors';
+import {green} from '@material-ui/core/colors';
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
-import { cloneDeep } from "lodash";
 import axios from "axios";
+import {v4 as uuid4} from "uuid";
 
 
 const styles = {
@@ -54,11 +54,12 @@ class Form extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            session: uuid4(),
             course: "",
-            assignmentId: "",
+            assignment_id: "",
             engine: "",
             dependencies: [],
-            linterConfig: null,
+            linter_config: null,
             resources: [],
             tests: [],
             correct: [],
@@ -66,16 +67,76 @@ class Form extends Component {
         }
     }
 
-    send() {
-        let content = this.state;
+    send(component) {
         let formData = new FormData()
-        for (let key in content) {
-            formData.append(key, content[key])
+
+        formData.append("session", this.state.session);
+        formData.append("component", component);
+
+        if (component === "linter_config") {
+            if (typeof this.state[component] !== File) {
+
+            } else {
+                let file = this.state[component]
+                formData.append(file.path, file, file.path);
+            }
+        } else {
+            this.state[component].forEach(file => {
+                console.log(file);
+                formData.append(file.path, file, file.path)
+            });
         }
-        axios.post("/upload", formData, {
+
+        console.log(formData);
+
+        axios({
+            method: "POST",
+            url: "http://0.0.0.0:5000/" + component,
+            data: formData,
             headers: {
-                'Content-Type': 'multipart/form-data'
-            }}).then(() => {console.log("Success!")})
+                'Access-Control-Allow-Origin': '*',
+                crossDomain: true,
+            }
+        }).then(() => {
+                console.log("Success!")
+            }
+        ).catch((error) => {
+            console.log(error)
+        })
+    }
+
+    setAndSend(files, component) {
+        console.log(component, files);
+        let newState = {}
+        newState[component] = files;
+        console.log(newState);
+        this.setState(newState, () => {
+            console.log(this.state);
+            this.send(component);
+        });
+    }
+
+    generate() {
+        let formData = new FormData()
+
+        formData.append("session", this.state.session);
+        formData.append("course", this.state.course);
+        formData.append("assignment_id", this.state.assignment_id);
+        formData.append("engine", this.state.session);
+
+        axios({
+            method: "POST",
+            url: "http://0.0.0.0:5000/generate",
+            data: formData,
+            crossDomain: true,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Access-Control-Allow-Origin': '*',
+                crossDomain: true,
+            }
+        }).then((response) => {
+            console.log("Success!")
+        })
     }
 
     render() {
@@ -85,17 +146,19 @@ class Form extends Component {
                     <Grid item style={styles.top} xs={12} md={6}>
                         <FormControl fullWidth>
                             <TextField id="outlined-basic" label="Course Code" variant="outlined"
-                            onChange={(event) =>
-                            {this.setState({course: event.target.value})}}/>
+                                       onChange={(event) => {
+                                           this.setState({course: event.target.value})
+                                       }}/>
                         </FormControl>
                     </Grid>
                 </Grid>
                 <Grid container direction="row" justify="center" alignItems="center">
                     <Grid item style={styles.drop} xs={12} md={6}>
                         <FormControl fullWidth>
-                            <TextField id="outlined-basic" label="Assignment ID" variant="outlined"
-                            onChange={(event) =>
-                            {this.setState({assignmentId: event.target.value})}}/>
+                            <TextField id="outlined-basic2" label="Assignment ID" variant="outlined"
+                                       onChange={(event) => {
+                                           this.setState({assignmentId: event.target.value})
+                                       }}/>
                         </FormControl>
                     </Grid>
                 </Grid>
@@ -108,8 +171,9 @@ class Form extends Component {
                                 id="demo-simple-select-outlined"
                                 value={this.state.engine}
                                 label="Engine"
-                                onChange={(event) =>
-                                {this.setState({engine: event.target.value})}}
+                                onChange={(event) => {
+                                    this.setState({engine: event.target.value})
+                                }}
                             >
                                 <MenuItem value="">
                                     <em>None</em>
@@ -124,15 +188,15 @@ class Form extends Component {
                     <Grid item style={styles.drop} xs={12} md={6}>
                         <DropzoneArea dropzoneText="Drop dependency libraries here..."
                                       onChange={(files) =>
-                                          this.setState({dependencies: files})}
+                                          this.setAndSend(files, 'dependencies')}
                         />
                     </Grid>
                 </Grid>
                 <Grid container direction="row" justify="center" alignItems="center">
                     <Grid item style={styles.drop} xs={12} md={6}>
                         <DropzoneArea filesLimit={1} dropzoneText="Drop linter configuration file here..."
-                                      onChange={(files) =>
-                                          this.setState({linterConfig: files})}
+                                      onChange={(file) =>
+                                          this.setAndSend(file, 'linter_config')}
                         />
                     </Grid>
                 </Grid>
@@ -140,7 +204,7 @@ class Form extends Component {
                     <Grid item style={styles.drop} xs={12} md={6}>
                         <DropzoneArea dropzoneText="Drop static resources here..."
                                       onChange={(files) =>
-                                          this.setState({resources: files})}
+                                          this.setAndSend(files, 'resources')}
                         />
                     </Grid>
                 </Grid>
@@ -148,7 +212,7 @@ class Form extends Component {
                     <Grid item style={styles.drop} xs={12} md={6}>
                         <DropzoneArea dropzoneText="Drop test directory here..."
                                       onChange={(files) =>
-                                          this.setState({tests: files})}
+                                          this.setAndSend(files, 'tests')}
                         />
                     </Grid>
                 </Grid>
@@ -156,19 +220,20 @@ class Form extends Component {
                     <Grid item style={{...styles.drop, ...styles.rightPad}} xs={6} md={3}>
                         <DropzoneArea dropzoneText="Drop correct solution directory here..."
                                       onChange={(files) =>
-                                          this.setState({correct: files})}
+                                          this.setAndSend(files, 'correct')}
                         />
                     </Grid>
                     <Grid item style={{...styles.drop, ...styles.leftPad}} xs={6} md={3}>
                         <DropzoneArea dropzoneText="Drop faulty solutions directory here..."
                                       onChange={(files) =>
-                                          this.setState({faulty: files})}
+                                          this.setAndSend(files, 'faulty')}
                         />
                     </Grid>
                 </Grid>
                 <Grid container direction="row" justify="center" alignItems="center">
                     <Grid item style={styles.topAndBottom} xs={12} md={6}>
-                        <ColorButton fullWidth={true} endIcon={<GetAppIcon/>} color="primary" onClick={this.send.bind(this)}>
+                        <ColorButton fullWidth={true} endIcon={<GetAppIcon/>} color="primary"
+                                     onClick={this.generate.bind(this)}>
                             Generate Autograder Bundle
                         </ColorButton>
                     </Grid>

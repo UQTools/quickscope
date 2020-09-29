@@ -8,37 +8,43 @@ def home():
     return render_template("index.html")
 
 
-@app.route("/upload_lib")
-def upload_lib():
-    pass
-
-
-@app.route("/upload_dependencies")
+@app.route("/dependencies", methods=["POST"])
 def upload_dependencies():
-    pass
+    print(request.files)
+    return "Hello, world"
 
 
-@app.route("/upload_resources")
+@app.route("/linter_config", methods=["POST"])
+def upload_linter_config():
+    print(request.files)
+    return "Hello, world"
+
+
+@app.route("/resources", methods=["POST"])
 def upload_resources():
-    pass
+    print(request.files)
+    return "Hello, world"
 
 
-@app.route("/upload_tests")
+@app.route("/tests", methods=["POST"])
 def upload_tests():
-    pass
+    print(request.files)
+    return "Hello, world"
 
 
-@app.route("/upload_solution")
-def upload_solution():
-    pass
+@app.route("/correct", methods=["POST"])
+def upload_correct():
+    print(request.files)
+    return "Hello, world"
 
 
-@app.route("/upload_faulty_solutions")
-def upload_faulty_solutions():
-    pass
+@app.route("/faulty", methods=["POST"])
+def upload_faulty():
+    print(request.files)
+    return "Hello, world"
 
 
-@app.route("/upload", methods=["POST"])
+@app.route("/generate", methods=["POST"])
 def upload():
-    print(request.data)
+    print(request.files)
     return "Hello, world"
