@@ -1,6 +1,9 @@
 import React, {Component} from "react";
+import JavaForm from "./JavaForm";
+import PythonForm from "./PythonForm";
 import {Button, FormControl, Grid} from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import {DropzoneArea} from "material-ui-dropzone";
 import GetAppIcon from "@material-ui/icons/GetApp";
@@ -14,6 +17,10 @@ import {v4 as uuid4} from "uuid";
 
 
 const styles = {
+    heading: {
+        marginTop: '120px',
+        marginBottom: '20px',
+    },
     title: {
         marginLeft: '20px',
     },
@@ -140,27 +147,31 @@ class Form extends Component {
         })
     }
 
-    isValidCourse() {
-      return this.state.course !== '';
-    }
-
-    isValidAssignmentId() {
-      return this.state.assignmentId !== '';
-    }
-
-    isValidEngine() {
-      return this.state.engine !== '';
+    getEngineForm() {
+      switch (this.state.engine) {
+        case 'JavaEngine':
+          return <JavaForm />;
+        case 'PythonEngine':
+          return <PythonForm />;
+        default:
+          return '';
+      }
     }
 
     render() {
         return (
             <div>
                 <Grid container direction="row" justify="center" alignItems="center">
-                    <Grid item style={styles.top} xs={12} md={6}>
+                    <Grid item style={styles.heading} xs={12} md={6}>
+                        <Typography variant="h3">Create an Autograder</Typography>
+                    </Grid>
+                </Grid>
+                <Grid container direction="row" justify="center" alignItems="center">
+                    <Grid item xs={12} md={6}>
                         <FormControl fullWidth>
                             <TextField id="outlined-basic" label="Course Code" variant="outlined"
                                        helperText="Course code of this assignment, e.g. CSSE2002"
-                                       error={!this.isValidCourse()}
+                                       autoFocus
                                        onChange={(event) => {
                                            this.setState({course: event.target.value})
                                        }}/>
@@ -172,7 +183,6 @@ class Form extends Component {
                         <FormControl fullWidth>
                             <TextField id="outlined-basic2" label="Assignment ID" variant="outlined"
                                        helperText="Human readable identifer, e.g. ass1"
-                                       error={!this.isValidAssignmentId()}
                                        onChange={(event) => {
                                            this.setState({assignmentId: event.target.value})
                                        }}/>
@@ -188,7 +198,6 @@ class Form extends Component {
                                 id="demo-simple-select-outlined"
                                 value={this.state.engine}
                                 label="Engine"
-                                error={!this.isValidEngine()}
                                 onChange={(event) => {
                                     this.setState({engine: event.target.value})
                                 }}
@@ -209,6 +218,11 @@ class Form extends Component {
                                       onChange={(files) =>
                                           this.setAndSend(files, 'dependencies')}
                         />
+                    </Grid>
+                </Grid>
+                <Grid container direction="row" justify="center" alignItems="center">
+                    <Grid item style={styles.drop} xs={12} md={6}>
+                        {this.getEngineForm()}
                     </Grid>
                 </Grid>
                 <Grid container direction="row" justify="center" alignItems="center">
