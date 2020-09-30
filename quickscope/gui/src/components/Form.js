@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {Button, FormControl, Grid} from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
+import FormHelperText from "@material-ui/core/FormHelperText";
 import {DropzoneArea} from "material-ui-dropzone";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import {withStyles} from "@material-ui/core/styles";
@@ -56,7 +57,7 @@ class Form extends Component {
         this.state = {
             session: uuid4(),
             course: "",
-            assignment_id: "",
+            assignmentId: "",
             engine: "",
             dependencies: [],
             linter_config: null,
@@ -121,8 +122,8 @@ class Form extends Component {
 
         formData.append("session", this.state.session);
         formData.append("course", this.state.course);
-        formData.append("assignment_id", this.state.assignment_id);
-        formData.append("engine", this.state.session);
+        formData.append("assignment_id", this.state.assignmentId);
+        formData.append("engine", this.state.engine);
 
         axios({
             method: "POST",
@@ -139,6 +140,18 @@ class Form extends Component {
         })
     }
 
+    isValidCourse() {
+      return this.state.course !== '';
+    }
+
+    isValidAssignmentId() {
+      return this.state.assignmentId !== '';
+    }
+
+    isValidEngine() {
+      return this.state.engine !== '';
+    }
+
     render() {
         return (
             <div>
@@ -146,6 +159,8 @@ class Form extends Component {
                     <Grid item style={styles.top} xs={12} md={6}>
                         <FormControl fullWidth>
                             <TextField id="outlined-basic" label="Course Code" variant="outlined"
+                                       helperText="Course code of this assignment, e.g. CSSE2002"
+                                       error={!this.isValidCourse()}
                                        onChange={(event) => {
                                            this.setState({course: event.target.value})
                                        }}/>
@@ -156,6 +171,8 @@ class Form extends Component {
                     <Grid item style={styles.drop} xs={12} md={6}>
                         <FormControl fullWidth>
                             <TextField id="outlined-basic2" label="Assignment ID" variant="outlined"
+                                       helperText="Human readable identifer, e.g. ass1"
+                                       error={!this.isValidAssignmentId()}
                                        onChange={(event) => {
                                            this.setState({assignmentId: event.target.value})
                                        }}/>
@@ -171,6 +188,7 @@ class Form extends Component {
                                 id="demo-simple-select-outlined"
                                 value={this.state.engine}
                                 label="Engine"
+                                error={!this.isValidEngine()}
                                 onChange={(event) => {
                                     this.setState({engine: event.target.value})
                                 }}
@@ -178,9 +196,10 @@ class Form extends Component {
                                 <MenuItem value="">
                                     <em>None</em>
                                 </MenuItem>
-                                <MenuItem value={10}>Java</MenuItem>
-                                <MenuItem value={20}>Python</MenuItem>
+                                <MenuItem value="JavaEngine">JavaEngine</MenuItem>
+                                <MenuItem value="PythonEngine">PythonEngine</MenuItem>
                             </Select>
+                            <FormHelperText>ChalkBox engine to use when processing submission</FormHelperText>
                         </FormControl>
                     </Grid>
                 </Grid>
