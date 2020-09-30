@@ -14,13 +14,16 @@ const styles = {
 class Header extends Component {
     render() {
         return (
-            <AppBar>
-                <Toolbar>
-                    <Typography variant="h6" color="inherit" style={styles.title}>
-                        Quickscope
-                    </Typography>
-                </Toolbar>
-            </AppBar>
+            <React.Fragment>
+                <AppBar>
+                    <Toolbar>
+                        <Typography variant="h6" color="inherit" style={styles.title}>
+                            Quickscope
+                        </Typography>
+                    </Toolbar>
+                </AppBar>
+                <Toolbar /> {/* adds spacing for the fixed appbar */}
+            </React.Fragment>
         )
     }
 }
