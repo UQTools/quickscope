@@ -12,6 +12,7 @@ python-dotenv = "^0.14.0"
 jinja2 = "^2.11.2"
 requests = "^2.24.0"
 flask_cors = "^3.0.9"
+"ruamel.yaml" = "^0.16.12"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.0.1"

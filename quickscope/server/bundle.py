@@ -19,6 +19,10 @@ def get_chalkbox(version: str, bundle_directory: Path) -> Path:
 
 
 def produce_lib_directory(lib_directory: Path, bundle_directory: Path) -> None:
+    copytree(f"{lib_directory}", f"{bundle_directory / 'included'}")
+
+
+def produce_resources_directory(lib_directory: Path, bundle_directory: Path) -> None:
     copytree(f"{lib_directory}", f"{bundle_directory / 'lib'}")
 
 
@@ -65,8 +69,8 @@ def produce_bundle(config: Dict[str, str]) -> str:
     chalkbox = get_chalkbox(config.get("chalkbox_version", "v0.1.0"),
                             bundle_directory)
     copyfile(f"{chalkbox}", f"{bundle_directory / 'chalkbox.jar'}")
-    produce_lib_directory(Path(config.get("lib_directory")), bundle_directory)
-    produce_solution_directory(Path(config.get("solution_directory")), bundle_directory)
+    produce_lib_directory(Path(config.get("dependencies")), bundle_directory)
+    produce_solution_directory(Path(config.get("solutions")), bundle_directory)
     produce_config_file(config, bundle_directory)
     setup_script = "add-apt-repository ppa:openjdk-r/ppa" \
                    "apt-get install -y openjdk-14-jdk" \
