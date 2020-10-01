@@ -1,23 +1,26 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
-import {Grid} from "@material-ui/core";
+import {
+    Grid,
+    Container,
+} from "@material-ui/core";
 import Header from "./Header";
 import Form from "./Form";
 
-
-let styles = {
-
+const styles = {
+    container: {
+        marginTop: '2em',
+    },
 }
 
 class App extends Component {
     render() {
-
         return (
             <div>
                 <Header/>
-                <Grid container direction="column">
+                <Container maxWidth="sm" style={styles.container}>
                     <Form/>
-                </Grid>
+                </Container>
             </div>)
     }
 }
