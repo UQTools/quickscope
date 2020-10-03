@@ -220,4 +220,5 @@ lerna-debug.log
 .DS_Store
 Thumbs.db
 
-state/
+state/*
+!state/.gitkeep

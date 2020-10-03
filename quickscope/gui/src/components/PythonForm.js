@@ -1,18 +1,11 @@
 import {withStyles} from "@material-ui/core/styles";
 import React, {Component} from "react";
 import axios from "axios";
-import {
-    Toolbar,
-    Typography,
-    AppBar,
-    Grid,
-    FormControl,
-    TextField,
-} from "@material-ui/core";
+import {Typography, Grid, FormControl, TextField} from "@material-ui/core";
 import {DropzoneArea} from "material-ui-dropzone";
 
-const styles = {
-}
+
+const styles = {}
 
 class PythonForm extends Component {
 
@@ -52,7 +45,6 @@ class PythonForm extends Component {
         }
 
         console.log(formData);
-
         axios({
             method: "POST",
             url: "http://0.0.0.0:5000/" + component,
@@ -67,7 +59,9 @@ class PythonForm extends Component {
         ).catch((error) => {
             console.log(error)
         })
+
     }
+
 
     setAndSend(files, component) {
         console.log(component, files);

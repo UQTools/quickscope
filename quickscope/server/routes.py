@@ -11,7 +11,8 @@ locations = {
     "resources": "resources/",
     "tests": "solutions/correct/test",
     "correct": "solutions/correct",
-    "faulty": "solutions/faulty"
+    "faulty": "solutions/faulty",
+    "linter_config": ""
 }
 
 
@@ -25,15 +26,23 @@ def make_session(session_id: str) -> Path:
 def reconstruct(session_id: str, component: str, files) -> None:
     session_path = make_session(session_id)
     if component == "linter_config":
-        file = request.files.get("linter_config").save()
+        file_name = None
+        for file_name_ in files:
+            file_name = file_name_
+
         file_path = session_path.joinpath("checkstyle.xml")
-        file.save(file_path)
+        file_path.unlink(missing_ok=True)
+        if file_name:
+            file = request.files.get(file_name)
+            file.save(file_path)
+        return
     subdirectory = session_path.joinpath(locations[component])
     if subdirectory.exists():
         rmtree(session_path.joinpath(locations[component]))
     for file in files:
         clean_file = file[1:] if file.startswith('/') else file
-        parent_directory = session_path.joinpath(locations[component]).joinpath(Path(clean_file).parent)
+        component_folder = locations[component] if not clean_file.startswith(locations[component]) else ""
+        parent_directory = session_path.joinpath(component_folder).joinpath(Path(clean_file).parent)
         file_path = parent_directory.joinpath(Path(file).name)
         if not parent_directory.exists():
             parent_directory.mkdir(parents=True, exist_ok=True)
@@ -95,9 +104,9 @@ def generate():
     form = request.form
     session_directory = Path(f"state/{form.get('session')}")
     config = {
-        "dependencies": session_directory.joinpath(locations.get("dependencies/")),
-        "solutions": session_directory.joinpath("solutions/"),
-        "resources": session_directory.joinpath("resources/"),
+        "dependencies": session_directory.joinpath(locations.get("dependencies")),
+        "solutions": session_directory.joinpath("solutions"),
+        "resources": session_directory.joinpath("resources"),
         "course_code": form.get("course"),
         "assignment_id": form.get("assignment_id"),
         "linter_config": session_directory.joinpath("checkstyle.xml"),

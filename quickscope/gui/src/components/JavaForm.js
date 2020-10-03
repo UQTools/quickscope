@@ -1,16 +1,6 @@
 import React, {Component} from "react";
 import axios from "axios";
-import {
-    withStyles,
-    Button,
-    FormControl,
-    Grid,
-    Toolbar,
-    Typography,
-    AppBar,
-    TextField,
-    FormHelperText
-} from "@material-ui/core";
+import {withStyles, Grid, Typography} from "@material-ui/core";
 import {DropzoneArea} from "material-ui-dropzone";
 
 
@@ -56,10 +46,13 @@ class JavaForm extends Component {
         formData.append("component", component);
 
         if (component === "linter_config") {
-            if (typeof this.state[component] !== File) {
-
+            let obj = this.state[component][0];
+            console.log(obj)
+            if (!obj || !obj.path) {
+                console.log("Not a file")
             } else {
-                let file = this.state[component]
+                let file = this.state[component][0]
+                console.log("***", file);
                 formData.append(file.path, file, file.path);
             }
         } else {
@@ -68,8 +61,6 @@ class JavaForm extends Component {
                 formData.append(file.path, file, file.path)
             });
         }
-
-        console.log(formData);
 
         axios({
             method: "POST",
@@ -88,7 +79,7 @@ class JavaForm extends Component {
     }
 
     setAndSend(files, component) {
-        console.log(component, files);
+        // console.log(component, files);
         let newState = {}
         newState[component] = files;
         console.log(newState);
@@ -106,6 +97,8 @@ class JavaForm extends Component {
                 </Grid>
                 <Grid item>
                     <DropzoneArea
+                        filesLimit={1000}
+                        maxFileSize={100000000}
                         dropzoneText="Drop dependency libraries here..."
                         onChange={(files) => this.setAndSend(files, 'dependencies')}
                     />
@@ -119,24 +112,32 @@ class JavaForm extends Component {
                 </Grid>
                 <Grid item>
                     <DropzoneArea
+                        filesLimit={1000}
+                        maxFileSize={100000000}
                         dropzoneText="Drop static resources here..."
                         onChange={(files) => this.setAndSend(files, 'resources')}
                     />
                 </Grid>
+                {/*<Grid item>*/}
+                {/*    <DropzoneArea*/}
+                {/*        filesLimit={500}*/}
+                {/*        dropzoneText="Drop test directory here..."*/}
+                {/*        onChange={(files) => this.setAndSend(files, 'tests')}*/}
+                {/*    />*/}
+                {/*</Grid>*/}
                 <Grid item>
                     <DropzoneArea
-                        dropzoneText="Drop test directory here..."
-                        onChange={(files) => this.setAndSend(files, 'tests')}
-                    />
-                </Grid>
-                <Grid item>
-                    <DropzoneArea
+                        filesLimit={1000}
+                        maxFileSize={100000000}
                         dropzoneText="Drop correct solution directory here..."
                         onChange={(files) => this.setAndSend(files, 'correct')}
                     />
                 </Grid>
                 <Grid item>
                     <DropzoneArea
+                        filesLimit={1000}
+                        maxFileSize={100000000}
+                        useChipsForPreview={true}
                         dropzoneText="Drop faulty solutions directory here..."
                         onChange={(files) => this.setAndSend(files, 'faulty')}
                     />

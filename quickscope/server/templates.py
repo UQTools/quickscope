@@ -1,3 +1,5 @@
+from typing import Dict
+
 from yaml import dump_all
 
 
@@ -40,7 +42,7 @@ PYTHON = {
 }
 
 
-def generate_config_yaml(form):
+def generate_config_yaml(form: Dict):
     engine_yaml = {"engine": f"chalkbox.engines.{form.get('engine').lower()}"}
 
     config_yaml = dump_all([engine_yaml, {**DEFAULT, **JAVA}], sort_keys=False)
@@ -49,6 +51,6 @@ def generate_config_yaml(form):
 
 
 if __name__ == "__main__":
-    form = {"engine": "java"}
-    print(generate_config_yaml(form))
+    ex_form = {"engine": "java"}
+    print(generate_config_yaml(ex_form))
 

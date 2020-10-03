@@ -26,13 +26,10 @@ def produce_resources_directory(lib_directory: Path, bundle_directory: Path) -> 
     copytree(f"{lib_directory}", f"{bundle_directory / 'lib'}")
 
 
-def produce_solution_directory(solution: Path, tests: Path, bundle_directory: Path,
-                               faulty_solutions: Path = None) -> None:
-    solutions_directory = bundle_directory / "solution"
-    mkdir(f"{solutions_directory}")
-    copytree(f"{solution}", f"{solutions_directory / 'src'}")
-    copytree(f"{tests}", f"{solutions_directory / 'test'}")
-    copytree(f"{faulty_solutions}", f"{solutions_directory / 'faulty'}")
+def produce_solution_directory(solution: Path, bundle_directory: Path) -> None:
+    solutions_directory = bundle_directory.joinpath("solutions")
+    solutions_directory.unlink(missing_ok=True)
+    copytree(f"{solution}", f"{solutions_directory}")
 
 
 def produce_config_file(config: Dict[str, str], bundle_directory: Path) -> None:
@@ -66,9 +63,7 @@ def produce_bundle(config: Dict[str, str]) -> str:
     bundle_directory = Path(mkdtemp()) / "autograder"
     zip_path = f"{bundle_directory}.zip"
     Path.mkdir(bundle_directory)
-    chalkbox = get_chalkbox(config.get("chalkbox_version", "v0.1.0"),
-                            bundle_directory)
-    copyfile(f"{chalkbox}", f"{bundle_directory / 'chalkbox.jar'}")
+    get_chalkbox(config.get("chalkbox_version", "v0.1.0"),bundle_directory)
     produce_lib_directory(Path(config.get("dependencies")), bundle_directory)
     produce_solution_directory(Path(config.get("solutions")), bundle_directory)
     produce_config_file(config, bundle_directory)
