@@ -1,8 +1,7 @@
 from jinja2 import Environment, FileSystemLoader
-from os import mkdir
 from pathlib import Path
 from requests import get
-from shutil import copyfile, copytree, make_archive
+from shutil import copytree, make_archive
 from tempfile import mkdtemp
 from typing import Dict, Any
 from .templates import generate_config_yaml

@@ -1,10 +1,11 @@
 from typing import Dict
+from collections.abc import Mapping
 
 from yaml import dump_all
 
 
 DEFAULT = {
-    "engine": None,
+    "course_code": None,
     "assignment": None,
     "submission": "/autograder/submission/",
     "outputFile": "/autograder/results/results.json",
@@ -42,10 +43,36 @@ PYTHON = {
 }
 
 
-def generate_config_yaml(form: Dict):
-    engine_yaml = {"engine": f"chalkbox.engines.{form.get('engine').lower()}"}
+def deep_update(original: Dict, updates: Mapping):
+    """
+    Update a nested dictionary.
+    Modifies original in place.
+    """
+    for key, value in updates.items():
+        if isinstance(value, Mapping) and value:
+            returned = deep_update(original.get(key, {}), value)
+            original[key] = returned
+        else:
+            original[key] = updates[key]
+    return original
 
-    config_yaml = dump_all([engine_yaml, {**DEFAULT, **JAVA}], sort_keys=False)
+
+def generate_config_yaml(form: Dict):
+    engine = form.get('engine')
+    engine_yaml = {"engine": f"chalkbox.engines.{engine.lower()}"}
+
+    deep_update(DEFAULT, {"course_code": form.get("course_code"),
+                          "assignment": form.get("assignment_id")})
+
+    if engine == "JavaEngine":
+        deep_update(JAVA, form.get("java_stages"))
+        config = {**DEFAULT, **JAVA}
+    elif engine == "PythonEngine":
+        config = {**DEFAULT, **PYTHON}
+    else:
+        raise NotImplementedError
+
+    config_yaml = dump_all([engine_yaml, config], sort_keys=False)
 
     return config_yaml
 
