@@ -5,6 +5,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import grey from '@material-ui/core/colors/grey';
 import green from '@material-ui/core/colors/green';
 import {ThemeProvider} from "@material-ui/styles";
+import { SnackbarProvider } from "notistack";
 
 const theme = createMuiTheme({
     palette: {
@@ -20,9 +21,11 @@ const theme = createMuiTheme({
 
 const Index = () => {
     return (
-        <ThemeProvider theme={theme}>
-            <App/>
-        </ThemeProvider>
+        <SnackbarProvider maxSnack={3}>
+            <ThemeProvider theme={theme}>
+                <App/>
+            </ThemeProvider>
+        </SnackbarProvider>
     )
 };
 

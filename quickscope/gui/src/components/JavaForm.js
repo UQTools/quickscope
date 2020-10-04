@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import axios from "axios";
 import {withStyles, Grid, Typography} from "@material-ui/core";
 import {DropzoneArea} from "material-ui-dropzone";
-
+import { withSnackbar } from "notistack";
 
 const styles = {
 }
@@ -99,6 +99,11 @@ class JavaForm extends Component {
                     <DropzoneArea
                         filesLimit={1000}
                         maxFileSize={100000000}
+                        useChipsForPreview={true}
+                        showAlerts={false}
+                        onDrop={e => {
+                            this.props.enqueueSnackbar(`Added ${e.length} files`, { variant: 'success' });
+                        }}
                         dropzoneText="Drop dependency libraries here..."
                         onChange={(files) => this.setAndSend(files, 'dependencies')}
                     />
@@ -108,14 +113,6 @@ class JavaForm extends Component {
                         filesLimit={1}
                         dropzoneText="Drop linter configuration file here..."
                         onChange={(file) => this.setAndSend(file, 'linter_config')}
-                    />
-                </Grid>
-                <Grid item>
-                    <DropzoneArea
-                        filesLimit={1000}
-                        maxFileSize={100000000}
-                        dropzoneText="Drop static resources here..."
-                        onChange={(files) => this.setAndSend(files, 'resources')}
                     />
                 </Grid>
                 {/*<Grid item>*/}
@@ -129,6 +126,11 @@ class JavaForm extends Component {
                     <DropzoneArea
                         filesLimit={1000}
                         maxFileSize={100000000}
+                        useChipsForPreview={true}
+                        showAlerts={false}
+                        onDrop={e => {
+                            this.props.enqueueSnackbar(`Added ${e.length} files`, { variant: 'success' });
+                        }}
                         dropzoneText="Drop correct solution directory here..."
                         onChange={(files) => this.setAndSend(files, 'correct')}
                     />
@@ -138,6 +140,23 @@ class JavaForm extends Component {
                         filesLimit={1000}
                         maxFileSize={100000000}
                         useChipsForPreview={true}
+                        showAlerts={false}
+                        onDrop={e => {
+                            this.props.enqueueSnackbar(`Added ${e.length} files`, { variant: 'success' });
+                        }}
+                        dropzoneText="Drop expected structure directory here..."
+                        onChange={(files) => this.setAndSend(files, 'structure')}
+                    />
+                </Grid>
+                <Grid item>
+                    <DropzoneArea
+                        filesLimit={1000}
+                        maxFileSize={100000000}
+                        useChipsForPreview={true}
+                        showAlerts={false}
+                        onDrop={e => {
+                            this.props.enqueueSnackbar(`Added ${e.length} files`, { variant: 'success' });
+                        }}
                         dropzoneText="Drop faulty solutions directory here..."
                         onChange={(files) => this.setAndSend(files, 'faulty')}
                     />
@@ -148,5 +167,5 @@ class JavaForm extends Component {
 }
 
 
-export default withStyles(styles)(JavaForm);
+export default withSnackbar(withStyles(styles)(JavaForm));
 
