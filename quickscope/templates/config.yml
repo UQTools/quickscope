@@ -5,28 +5,28 @@ assignment: {{ assignment_id }}
 submission: /autograder/submission/
 outputFile: /autograder/results/results.json
 dependencies: {{ dependencies }}
+correctSolution: solutions/correct/src/
 
 conformance:
-  weighting: {{  }}
+  weighting: {{ java_stages.conformance.weighting }}
   expectedStructure: solutions/correct_structure/
-  violationPenalty: {{  }}
+  violationPenalty: {{ java_stages.conformance.violationPenalty }}
 
 functionality:
-  weighting: {{  }}
+  weighting: {{ java_stages.functionality.weighting }}
   testDirectory: solutions/correct/test/
-  included: {{  }}
 
 junit:
-  weighting: {{  }}
+  weighting: {{ java_stages.junit.weighting }}
   faultySolutions: solutions/faulty/
   assessableTestClasses:
     - tms.intersection.IntersectionTest
     - tms.sensors.DemoPressurePadTest
 
 checkstyle:
-  weighting: 15
+  weighting: {{ java_stages.checkstyle.weighting }}
   config: checkstyle.xml
   jar: lib/checkstyle-8.36-all.jar
   excluded:
     - /autograder/submission/src/tms/display/
-  violationPenalty: 0.5
+  violationPenalty: {{ java_stages.checkstyle.violationPenalty }}

@@ -26,6 +26,7 @@ class Form extends Component {
             course: "",
             assignmentId: "",
             engine: "",
+            javaStages: null,
         }
     }
 
@@ -36,6 +37,11 @@ class Form extends Component {
         formData.append("course", this.state.course);
         formData.append("assignment_id", this.state.assignmentId);
         formData.append("engine", this.state.engine);
+
+        if (this.state.engine === 'JavaEngine') {
+            formData.append("java_stages", JSON.stringify(this.state.javaStages));
+            console.log(JSON.stringify(this.state.javaStages));
+        }
 
         axios({
             method: "POST",
@@ -55,7 +61,10 @@ class Form extends Component {
     getEngineForm() {
       switch (this.state.engine) {
         case 'JavaEngine':
-          return <JavaForm session={this.state.session} />;
+          return <JavaForm
+              session={this.state.session}
+              onChangeStages={(newStages) => this.handleChangeJavaStages(newStages)}
+            />;
         case 'PythonEngine':
           return <PythonForm session={this.state.session} />;
         default:
@@ -63,11 +72,17 @@ class Form extends Component {
       }
     }
 
+    handleChangeJavaStages(newStages) {
+        let newState = { ...this.state };
+        newState.javaStages = newStages;
+        this.setState(newState);
+    }
+
     render() {
         return (
             <Grid container direction="column" spacing={3}>
                 <Grid item>
-                    <Typography variant="h3">Create an Autograder</Typography>
+                    <Typography variant="h2">Create Autograder</Typography>
                 </Grid>
                 <Grid item>
                     <FormControl fullWidth>
