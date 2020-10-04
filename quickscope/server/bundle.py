@@ -77,4 +77,4 @@ def produce_bundle(config: Dict[str, Any]) -> str:
     produce_run_script(run_call="java -jar chalkbox-all.jar config.yml",
                        bundle_directory=bundle_directory)
     make_archive(zip_path, "zip", bundle_directory)
-    return zip_path
+    return f"{zip_path}.zip"

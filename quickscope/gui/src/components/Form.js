@@ -11,6 +11,7 @@ import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import axios from "axios";
+import fileDownload from 'js-file-download'
 import {v4 as uuid4} from "uuid";
 
 
@@ -42,12 +43,12 @@ class Form extends Component {
             data: formData,
             crossDomain: true,
             headers: {
-                'Content-Type': 'multipart/form-data',
                 'Access-Control-Allow-Origin': '*',
                 crossDomain: true,
-            }
+            },
+            responseType: 'blob',
         }).then((response) => {
-            console.log("Success!")
+            fileDownload(response.data, 'autograder.zip');
         })
     }
 
