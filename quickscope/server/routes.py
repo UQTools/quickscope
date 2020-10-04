@@ -4,6 +4,7 @@ from flask_cors import cross_origin
 from pathlib import Path
 from . import app
 from .bundle import produce_bundle
+import json
 
 SUCCESS = Response(status=200)
 locations = {
@@ -110,7 +111,12 @@ def generate():
         "course_code": form.get("course"),
         "assignment_id": form.get("assignment_id"),
         "linter_config": session_directory.joinpath("checkstyle.xml"),
+        "java_stages": json.loads(form.get("java_stages")),
         # More to come
     }
     bundle_path = Path(produce_bundle(config))
-    return send_from_directory(bundle_path.parent, bundle_path.name, as_attachment=True)
+    print(bundle_path)
+    print(bundle_path.parent)
+    print(bundle_path.name)
+    return send_from_directory(bundle_path.parent, bundle_path.name,
+                               as_attachment=True)

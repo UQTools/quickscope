@@ -58,10 +58,8 @@ def produce_run_script(run_call: str, bundle_directory: Path = None) -> None:
         content = run_template.render(run_call=run_call)
         run_script.write(content)
 
-
 def produce_bundle(config: Dict[str, str]) -> str:
     bundle_directory = Path(mkdtemp()) / "autograder"
-    zip_path = f"{bundle_directory}.zip"
     Path.mkdir(bundle_directory)
     get_chalkbox(config.get("chalkbox_version", "v0.1.0"),bundle_directory)
     produce_lib_directory(Path(config.get("dependencies")), bundle_directory)
@@ -74,5 +72,6 @@ def produce_bundle(config: Dict[str, str]) -> str:
                          bundle_directory=bundle_directory)
     produce_run_script(run_call="java -jar chalkbox-all.jar config.yml",
                        bundle_directory=bundle_directory)
-    make_archive(zip_path, "zip", bundle_directory)
-    return zip_path
+    make_archive(bundle_directory, "zip", bundle_directory)
+    return f"{bundle_directory}.zip"
+
