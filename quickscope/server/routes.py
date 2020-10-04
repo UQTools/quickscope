@@ -104,6 +104,7 @@ def generate():
     form = request.form
     session_directory = Path(f"state/{form.get('session')}")
     config = {
+        "engine": form.get("engine"),
         "dependencies": session_directory.joinpath(locations.get("dependencies")),
         "solutions": session_directory.joinpath("solutions"),
         "resources": session_directory.joinpath("resources"),

@@ -4,7 +4,8 @@ from pathlib import Path
 from requests import get
 from shutil import copyfile, copytree, make_archive
 from tempfile import mkdtemp
-from typing import Dict
+from typing import Dict, Any
+from .templates import generate_config_yaml
 
 
 CHALKBOX_URL = "https://github.com/UQTools/chalkbox/releases/download/"
@@ -19,11 +20,11 @@ def get_chalkbox(version: str, bundle_directory: Path) -> Path:
 
 
 def produce_lib_directory(lib_directory: Path, bundle_directory: Path) -> None:
-    copytree(f"{lib_directory}", f"{bundle_directory / 'included'}")
+    copytree(f"{lib_directory}", f"{bundle_directory / 'lib'}")
 
 
 def produce_resources_directory(lib_directory: Path, bundle_directory: Path) -> None:
-    copytree(f"{lib_directory}", f"{bundle_directory / 'lib'}")
+    copytree(f"{lib_directory}", f"{bundle_directory / 'resources'}")
 
 
 def produce_solution_directory(solution: Path, bundle_directory: Path) -> None:
@@ -32,12 +33,13 @@ def produce_solution_directory(solution: Path, bundle_directory: Path) -> None:
     copytree(f"{solution}", f"{solutions_directory}")
 
 
-def produce_config_file(config: Dict[str, str], bundle_directory: Path) -> None:
-    file_loader = FileSystemLoader("quickscope/templates")
-    environment = Environment(loader=file_loader)
-    config_template = environment.get_template("config.yml")
+def produce_config_file(config: Dict[str, Any], bundle_directory: Path) -> None:
+    # file_loader = FileSystemLoader("quickscope/templates")
+    # environment = Environment(loader=file_loader)
+    # config_template = environment.get_template("config.yml")
     with open(f"{bundle_directory / 'config.yml'}", "w") as config_file:
-        content = config_template.render(**config)
+        # content = config_template.render(**config)
+        content = generate_config_yaml(config)
         config_file.write(content)
 
 
@@ -59,11 +61,11 @@ def produce_run_script(run_call: str, bundle_directory: Path = None) -> None:
         run_script.write(content)
 
 
-def produce_bundle(config: Dict[str, str]) -> str:
+def produce_bundle(config: Dict[str, Any]) -> str:
     bundle_directory = Path(mkdtemp()) / "autograder"
-    zip_path = f"{bundle_directory}.zip"
+    zip_path = f"{bundle_directory}"
     Path.mkdir(bundle_directory)
-    get_chalkbox(config.get("chalkbox_version", "v0.1.0"),bundle_directory)
+    get_chalkbox(config.get("chalkbox_version", "v0.1.0"), bundle_directory)
     produce_lib_directory(Path(config.get("dependencies")), bundle_directory)
     produce_solution_directory(Path(config.get("solutions")), bundle_directory)
     produce_config_file(config, bundle_directory)
