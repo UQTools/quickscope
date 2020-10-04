@@ -2,7 +2,7 @@
 name = "quickscope"
 version = "0.1.0"
 description = "Build Gradescope Autograders with Chalkbox"
-authors = ["Nicholas Lambourne <dev@ndl.im>, Max Miller"]
+authors = ["Nicholas Lambourne <dev@ndl.im>, Max Miller <me@maxcmiller.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
