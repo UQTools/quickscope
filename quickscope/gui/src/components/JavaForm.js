@@ -5,6 +5,10 @@ import {
     theme,
     Grid,
     Box,
+    List,
+    ListItem,
+    ListItemText,
+    ListItemIcon,
     Divider,
     Typography,
     Checkbox,
@@ -15,6 +19,7 @@ import {
     FormControlLabel,
     TextField,
 } from "@material-ui/core";
+import DescriptionIcon from '@material-ui/icons/Description';
 import {DropzoneArea} from "material-ui-dropzone";
 import { withSnackbar } from "notistack";
 
@@ -48,7 +53,7 @@ class JavaForm extends Component {
             junit: {
                 enabled: false,
                 weighting: 0,
-                assessableTestClasses: '',
+                assessableTestClasses: [],
             },
             checkstyle: {
                 enabled: false,
@@ -165,6 +170,29 @@ class JavaForm extends Component {
             return "Must be greater than 0";
         }
         return "";
+    }
+
+    handleClickSolutionFile(event) {
+        console.log(event.target);
+        let chip;
+        if (event.target.classList.contains('MuiChip-label')) {
+            chip = event.target;
+        } else {
+            chip = event.target.querySelector('.MuiChip-label');
+        }
+        console.log(chip);
+
+        // Toggle whether the clicked class is assessable
+        let newState = { ...this.state };
+        if (newState.junit.assessableTestClasses.includes(chip.textContent)) {
+            newState.junit.assessableTestClasses.splice(
+                newState.junit.assessableTestClasses.indexOf(chip.textContent), 1);
+        } else {
+            newState.junit.assessableTestClasses.push(chip.textContent);
+        }
+        this.setState(newState);
+
+        event.preventDefault();
     }
 
     render() {
@@ -322,11 +350,17 @@ class JavaForm extends Component {
                         onChange={(files) => this.setAndSend(files, 'dependencies')}
                     />
                 </Grid>
-                <Grid item>
+                <Grid item id="solutionChips">
                     <DropzoneArea
                         filesLimit={1000}
                         maxFileSize={100000000}
+                        showPreviews={true}
+                        showPreviewsInDropzone={false}
                         useChipsForPreview={true}
+                        previewChipProps={{
+                            clickable: true,
+                            onClick: (event) => this.handleClickSolutionFile(event),
+                        }}
                         showAlerts={false}
                         onDrop={e => {
                             this.props.enqueueSnackbar(`Added ${e.length} files`, { variant: 'success' });
@@ -335,6 +369,37 @@ class JavaForm extends Component {
                         onChange={(files) => this.setAndSend(files, 'correct')}
                     />
                 </Grid>
+                {this.state.junit.enabled &&
+                <div>
+                    <Divider variant="middle" style={styles.divider} />
+                    <Grid item>
+                        <Typography variant="h5" gutterBottom>JUnit</Typography>
+                        <Typography variant="body1">Assessable Test Classes</Typography>
+                        <Typography variant="body2" color="textSecondary">Select classes by clicking on files above</Typography>
+                        <List>
+                            {this.state.junit.assessableTestClasses.map((c, i) =>
+                            <ListItem key={i}>
+                                <ListItemIcon>
+                                    <DescriptionIcon />
+                                </ListItemIcon>
+                                <ListItemText primary={c} />
+                            </ListItem>
+                            )}
+                        </List>
+                        <DropzoneArea
+                            filesLimit={1000}
+                            maxFileSize={100000000}
+                            useChipsForPreview={true}
+                            showAlerts={false}
+                            onDrop={e => {
+                                this.props.enqueueSnackbar(`Added ${e.length} files`, { variant: 'success' });
+                            }}
+                            dropzoneText="Drop faulty solutions directory here..."
+                            onChange={(files) => this.setAndSend(files, 'faulty')}
+                        />
+                    </Grid>
+                </div>
+                }
                 {this.state.conformance.enabled &&
                 <div>
                     <Divider variant="middle" style={styles.divider} />
@@ -350,25 +415,6 @@ class JavaForm extends Component {
                             }}
                             dropzoneText="Drop expected structure directory here..."
                             onChange={(files) => this.setAndSend(files, 'structure')}
-                        />
-                    </Grid>
-                </div>
-                }
-                {this.state.junit.enabled &&
-                <div>
-                    <Divider variant="middle" style={styles.divider} />
-                    <Grid item>
-                        <Typography variant="h5" gutterBottom>JUnit</Typography>
-                        <DropzoneArea
-                            filesLimit={1000}
-                            maxFileSize={100000000}
-                            useChipsForPreview={true}
-                            showAlerts={false}
-                            onDrop={e => {
-                                this.props.enqueueSnackbar(`Added ${e.length} files`, { variant: 'success' });
-                            }}
-                            dropzoneText="Drop faulty solutions directory here..."
-                            onChange={(files) => this.setAndSend(files, 'faulty')}
                         />
                     </Grid>
                 </div>
