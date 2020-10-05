@@ -1,11 +1,14 @@
-from jinja2 import Environment, FileSystemLoader
 from pathlib import Path
-from requests import get
 from shutil import copytree, make_archive
 from tempfile import mkdtemp
-from typing import Dict, Any
-from .templates import generate_config_yaml
+from typing import Any, Dict, List
 
+from jinja2 import Environment, FileSystemLoader
+from requests import get
+from yaml import dump_all
+
+from .templates import PYTHON, JAVA, DEFAULT, SETUP_SCRIPTS
+from .utils import deep_update
 
 CHALKBOX_URL = "https://github.com/UQTools/chalkbox/releases/download/"
 
@@ -26,7 +29,10 @@ def produce_lib_directory(lib_directory: Path, bundle_directory: Path) -> None:
 
 
 def produce_resources_directory(lib_directory: Path, bundle_directory: Path) -> None:
-    copytree(f"{lib_directory}", f"{bundle_directory / 'resources'}")
+    if lib_directory.exists():
+        copytree(f"{lib_directory}", f"{bundle_directory / 'resources'}")
+    else:
+        lib_directory.mkdir(parents=True)
 
 
 def produce_solution_directory(solution: Path, bundle_directory: Path) -> None:
@@ -38,14 +44,34 @@ def produce_solution_directory(solution: Path, bundle_directory: Path) -> None:
         solution.mkdir(parents=True)
 
 
-def produce_config_file(config: Dict[str, Any], bundle_directory: Path) -> None:
-    # file_loader = FileSystemLoader("quickscope/templates")
-    # environment = Environment(loader=file_loader)
-    # config_template = environment.get_template("config.yml")
+def get_dependencies(dependency_path: Path) -> List[str]:
+    dependencies = []
+    for path in dependency_path.iterdir():
+        if path.is_file():
+            dependencies.append(f"{Path(path.parent.name) / path.name}")
+    return dependencies
+
+
+def produce_config_file(form: Dict[str, Any], bundle_directory: Path) -> None:
+    engine = form.get('engine')
+    engine_yaml = {"engine": f"chalkbox.engines.{engine}"}
+    dependencies = get_dependencies(form.get("dependencies"))
+    default = deep_update(DEFAULT, {"course_code": form.get("course_code"),
+                                    "assignment": form.get("assignment_id"),
+                                    "dependencies": dependencies})
+
+    if engine == "JavaEngine":
+        java = deep_update(JAVA, form.get("java_stages"))
+        config = {**default, **java}
+    elif engine == "PythonEngine":
+        config = {**default, **PYTHON}
+    else:
+        raise NotImplementedError
+
+    config_yaml = dump_all([engine_yaml, config], sort_keys=False)
+
     with open(f"{bundle_directory / 'config.yml'}", "w") as config_file:
-        # content = config_template.render(**config)
-        content = generate_config_yaml(config)
-        config_file.write(content)
+        config_file.write(config_yaml)
 
 
 def produce_setup_script(setup_calls: str, bundle_directory: Path) -> None:
@@ -74,8 +100,7 @@ def produce_bundle(config: Dict[str, Any]) -> str:
     produce_lib_directory(Path(config.get("dependencies")), bundle_directory)
     produce_solution_directory(Path(config.get("solutions")), bundle_directory)
     produce_config_file(config, bundle_directory)
-    setup_script = "apt-get install -y openjdk-11-jdk\n" \
-        "java -version"
+    setup_script = SETUP_SCRIPTS.get(config.get("engine"))
     produce_setup_script(setup_calls=setup_script,
                          bundle_directory=bundle_directory)
     produce_run_script(run_call="java -jar chalkbox.jar config.yml",

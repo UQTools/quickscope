@@ -18,13 +18,6 @@ locations = {
 }
 
 
-def make_session(session_id: str) -> Path:
-    session_path = Path(app.config["UPLOAD_FOLDER"]).joinpath(session_id)
-    if not session_path.exists():
-        session_path.mkdir(parents=True, exist_ok=True)
-    return session_path
-
-
 def collapse_path_overlap(clean_file: str, component: str) -> str:
     folders = locations[component].split("/")
     if clean_file.startswith(locations[component]):
