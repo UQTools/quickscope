@@ -1,10 +1,13 @@
+import json
+from pathlib import Path
 from shutil import rmtree
+
 from flask import render_template, request, Response, send_from_directory
 from flask_cors import cross_origin
-from pathlib import Path
+
 from . import app
 from .bundle import produce_bundle
-import json
+from .utils import make_session
 
 SUCCESS = Response(status=200)
 locations = {
