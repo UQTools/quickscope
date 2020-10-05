@@ -52,6 +52,20 @@ def get_dependencies(dependency_path: Path) -> List[str]:
     return dependencies
 
 
+def reformat_test_classes(config: Dict[str, Any], session_directory: Path):
+    test_directory: Path = session_directory / "solutions/correct/test"
+    test_classes = config.get("junit").get("assessableTestClasses")
+    java_paths = []
+    for test_class in test_classes:
+        matches = list(test_directory.glob(f"**/{test_class}"))
+        if not matches:
+            raise FileNotFoundError
+        match = matches[0]
+        text = f"{'.'.join(match.parts[5:])}".replace(".java", "")
+        java_paths.append(text)
+    config["junit"]["assessableTestClasses"] = java_paths
+
+
 def produce_config_file(form: Dict[str, Any], bundle_directory: Path) -> None:
     engine = form.get('engine')
     engine_yaml = {"engine": f"chalkbox.engines.{engine}"}
@@ -62,13 +76,14 @@ def produce_config_file(form: Dict[str, Any], bundle_directory: Path) -> None:
 
     if engine == "JavaEngine":
         java = deep_update(JAVA, form.get("java_stages"))
-        config = {**default, **java}
+        settings = {**default, **java}
+        reformat_test_classes(settings, form.get("session_directory"))
     elif engine == "PythonEngine":
-        config = {**default, **PYTHON}
+        settings = {**default, **PYTHON}
     else:
         raise NotImplementedError
 
-    config_yaml = dump_all([engine_yaml, config], sort_keys=False)
+    config_yaml = dump_all([engine_yaml, settings], sort_keys=False)
 
     with open(f"{bundle_directory / 'config.yml'}", "w") as config_file:
         config_file.write(config_yaml)
