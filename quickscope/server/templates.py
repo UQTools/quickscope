@@ -4,7 +4,6 @@ from collections.abc import Mapping
 
 from yaml import dump_all
 
-
 DEFAULT = {
     "course_code": None,
     "assignment": None,
@@ -15,7 +14,6 @@ DEFAULT = {
 
 JAVA = {
     "correctSolution": "solutions/correct/src/",
-    "dependencies": "",
     "conformance": {
         "weighting": 0,
         "expectedStructure": "solutions/correct_structure/",
@@ -71,15 +69,17 @@ def generate_config_yaml(form: Dict):
     engine = form.get('engine')
     engine_yaml = {"engine": f"chalkbox.engines.{engine}"}
 
-    deep_update(DEFAULT, {"course_code": form.get("course_code"),
-                          "assignment": form.get("assignment_id"),
-                          "dependencies": get_dependencies(form.get("dependencies"))})
+    dependencies = get_dependencies(form.get("dependencies"))
+
+    default = deep_update(DEFAULT, {"course_code": form.get("course_code"),
+                                    "assignment": form.get("assignment_id"),
+                                    "dependencies": dependencies})
 
     if engine == "JavaEngine":
-        deep_update(JAVA, form.get("java_stages"))
-        config = {**DEFAULT, **JAVA}
+        java = deep_update(JAVA, form.get("java_stages"))
+        config = {**default, **java}
     elif engine == "PythonEngine":
-        config = {**DEFAULT, **PYTHON}
+        config = {**default, **PYTHON}
     else:
         raise NotImplementedError
 
@@ -91,4 +91,3 @@ def generate_config_yaml(form: Dict):
 if __name__ == "__main__":
     ex_form = {"engine": "java"}
     print(generate_config_yaml(ex_form))
-
