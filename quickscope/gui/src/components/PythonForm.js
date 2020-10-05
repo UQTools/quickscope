@@ -122,6 +122,7 @@ class PythonForm extends Component {
                 </Grid>
                 <Grid item>
                     <DropzoneArea
+                        filesLimit={1000}
                         dropzoneText="Drop included directory here..."
                         onChange={(files) => this.setAndSend(files, 'included')}
                     />

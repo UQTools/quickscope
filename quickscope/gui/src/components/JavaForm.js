@@ -380,6 +380,11 @@ class JavaForm extends Component {
                         <Typography variant="h5" gutterBottom>Checkstyle</Typography>
                         <DropzoneArea
                             filesLimit={1}
+                            useChipsForPreview={true}
+                            showAlerts={false}
+                            onDrop={e => {
+                                this.props.enqueueSnackbar(`Added ${e.length} files`, { variant: 'success' });
+                            }}
                             dropzoneText="Drop Checkstyle configuration file here..."
                             onChange={(file) => this.setAndSend(file, 'linter_config')}
                         />

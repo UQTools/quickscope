@@ -1,4 +1,5 @@
-from typing import Dict
+from pathlib import Path
+from typing import Dict, List
 from collections.abc import Mapping
 
 from yaml import dump_all
@@ -9,7 +10,7 @@ DEFAULT = {
     "assignment": None,
     "submission": "/autograder/submission/",
     "outputFile": "/autograder/results/results.json",
-    "dependencies": ""
+    "dependencies": []
 }
 
 JAVA = {
@@ -57,12 +58,21 @@ def deep_update(original: Dict, updates: Mapping):
     return original
 
 
+def get_dependencies(dependency_path: Path) -> List[str]:
+    dependencies = []
+    for path in dependency_path.iterdir():
+        if path.is_file():
+            dependencies.append(f"{Path(path.parent.name) / path.name}")
+    return dependencies
+
+
 def generate_config_yaml(form: Dict):
     engine = form.get('engine')
     engine_yaml = {"engine": f"chalkbox.engines.{engine.lower()}"}
 
     deep_update(DEFAULT, {"course_code": form.get("course_code"),
-                          "assignment": form.get("assignment_id")})
+                          "assignment": form.get("assignment_id"),
+                          "dependencies": get_dependencies(form.get("dependencies"))})
 
     if engine == "JavaEngine":
         deep_update(JAVA, form.get("java_stages"))

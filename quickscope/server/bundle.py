@@ -19,7 +19,10 @@ def get_chalkbox(version: str, bundle_directory: Path) -> Path:
 
 
 def produce_lib_directory(lib_directory: Path, bundle_directory: Path) -> None:
-    copytree(f"{lib_directory}", f"{bundle_directory / 'lib'}")
+    if lib_directory.exists():
+        copytree(f"{lib_directory}", f"{bundle_directory / 'lib'}")
+    else:
+        lib_directory.mkdir(parents=True)
 
 
 def produce_resources_directory(lib_directory: Path, bundle_directory: Path) -> None:
@@ -29,7 +32,10 @@ def produce_resources_directory(lib_directory: Path, bundle_directory: Path) -> 
 def produce_solution_directory(solution: Path, bundle_directory: Path) -> None:
     solutions_directory = bundle_directory.joinpath("solutions")
     solutions_directory.unlink(missing_ok=True)
-    copytree(f"{solution}", f"{solutions_directory}")
+    if solution.exists():
+        copytree(f"{solution}", f"{solutions_directory}")
+    else:
+        solution.mkdir(parents=True)
 
 
 def produce_config_file(config: Dict[str, Any], bundle_directory: Path) -> None:
@@ -73,7 +79,7 @@ def produce_bundle(config: Dict[str, Any]) -> str:
                    "java -version"
     produce_setup_script(setup_call=setup_script,
                          bundle_directory=bundle_directory)
-    produce_run_script(run_call="java -jar chalkbox-all.jar config.yml",
+    produce_run_script(run_call="java -jar chalkbox.jar config.yml",
                        bundle_directory=bundle_directory)
     make_archive(zip_path, "zip", bundle_directory)
     return f"{zip_path}.zip"
