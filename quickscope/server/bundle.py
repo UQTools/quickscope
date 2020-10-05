@@ -1,5 +1,5 @@
 from pathlib import Path
-from shutil import copytree, make_archive
+from shutil import copytree, make_archive, copyfile
 from tempfile import mkdtemp
 from typing import Any, Dict, List
 
@@ -115,7 +115,11 @@ def produce_bundle(config: Dict[str, Any]) -> str:
     produce_lib_directory(Path(config.get("dependencies")), bundle_directory)
     produce_solution_directory(Path(config.get("solutions")), bundle_directory)
     produce_config_file(config, bundle_directory)
-    setup_script = SETUP_SCRIPTS.get(config.get("engine"))
+    engine = config.get("engine")
+    setup_script = SETUP_SCRIPTS.get(engine)
+    linter_config: Path = config.get("session_directory").joinpath("checkstyle.xml")
+    if engine == "JavaEngine" and linter_config.exists():
+        copyfile(linter_config, bundle_directory.joinpath("checkstyle.xml"))
     produce_setup_script(setup_calls=setup_script,
                          bundle_directory=bundle_directory)
     produce_run_script(run_call="java -jar chalkbox.jar config.yml",
