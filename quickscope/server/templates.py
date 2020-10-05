@@ -9,10 +9,11 @@ DEFAULT = {
     "assignment": None,
     "submission": "/autograder/submission/",
     "outputFile": "/autograder/results/results.json",
-    "dependencies": ""
 }
 
 JAVA = {
+    "correctSolution": "solutions/correct/src/",
+    "dependencies": "",
     "conformance": {
         "weighting": 0,
         "expectedStructure": "solutions/correct_structure/",
@@ -21,7 +22,6 @@ JAVA = {
     "functionality": {
         "weighting": 0,
         "testDirectory": "solutions/correct/test/",
-        "violationPenalty": 0
     },
     "junit": {
         "weighting": 0,
