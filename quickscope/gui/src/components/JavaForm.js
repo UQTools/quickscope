@@ -4,6 +4,8 @@ import {
     withStyles,
     theme,
     Grid,
+    Button,
+    IconButton,
     Box,
     List,
     ListItem,
@@ -20,6 +22,8 @@ import {
     TextField,
 } from "@material-ui/core";
 import DescriptionIcon from '@material-ui/icons/Description';
+import NotInterestedIcon from '@material-ui/icons/NotInterested';
+import AddIcon from '@material-ui/icons/Add';
 import {DropzoneArea} from "material-ui-dropzone";
 import { withSnackbar } from "notistack";
 
@@ -58,9 +62,10 @@ class JavaForm extends Component {
             checkstyle: {
                 enabled: false,
                 weighting: 0,
-                excluded: '',
+                excluded: [],
                 violationPenalty: 0.5,
             },
+            excludedPathInput: "",
         };
     }
 
@@ -192,6 +197,19 @@ class JavaForm extends Component {
         this.setState(newState);
 
         event.preventDefault();
+    }
+
+    handleExcludedPathChange(event) {
+        let newState = { ...this.state };
+        newState.excludedPathInput = event.target.value;
+        this.setState(newState);
+    }
+
+    addExcludedPath() {
+      let newState = { ...this.state };
+      newState.checkstyle.excluded.push("/autograder/submission/" + this.state.excludedPathInput);
+      newState.excludedPathInput = "";
+      this.setState(newState);
     }
 
     render() {
@@ -423,6 +441,44 @@ class JavaForm extends Component {
                     <Divider variant="middle" style={styles.divider} />
                     <Grid item>
                         <Typography variant="h5" gutterBottom>Checkstyle</Typography>
+                        <Typography variant="body1">Excluded Paths</Typography>
+                        <List>
+                            {this.state.checkstyle.excluded.map((path, i) =>
+                            <ListItem key={i}>
+                                <ListItemIcon>
+                                    <NotInterestedIcon />
+                                </ListItemIcon>
+                                <ListItemText primary={path} />
+                            </ListItem>
+                            )}
+                            {this.state.checkstyle.excluded.length == 0 &&
+                            <Typography variant="subtitle1" color="textSecondary">None</Typography>
+                            }
+                        </List>
+                        <TextField
+                            label="Add excluded path"
+                            type="text"
+                            name="excluded_path"
+                            variant="outlined"
+                            shrink
+                            value={this.state.excludedPathInput}
+                            onChange={event => this.handleExcludedPathChange(event)}
+                            onKeyPress={event => {
+                                if (event.key === 'Enter') {
+                                    this.addExcludedPath();
+                                    event.preventDefault();
+                                }
+                            }}
+                            helperText="Relative to submission directory, e.g. src/tms/display/"
+                            style={{ marginBottom: '1em' }}
+                            InputProps={{ endAdornment:
+                                <IconButton
+                                    onClick={event => this.addExcludedPath()}
+                                >
+                                    <AddIcon />
+                                </IconButton>
+                            }}
+                        />
                         <DropzoneArea
                             filesLimit={1}
                             useChipsForPreview={true}
