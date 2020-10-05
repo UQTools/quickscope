@@ -128,6 +128,7 @@ def generate():
         "course_code": form.get("course"),
         "assignment_id": form.get("assignment_id"),
         "linter_config": session_directory.joinpath("checkstyle.xml"),
+        "session_directory": session_directory,
         # More to come
     }
 
@@ -135,8 +136,5 @@ def generate():
         config["java_stages"] = json.loads(form.get("java_stages"))
 
     bundle_path = Path(produce_bundle(config))
-    print(bundle_path)
-    print(bundle_path.parent)
-    print(bundle_path.name)
     return send_from_directory(bundle_path.parent, bundle_path.name,
                                as_attachment=True)
