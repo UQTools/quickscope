@@ -59,7 +59,7 @@ def deep_update(original: Dict, updates: Mapping):
 
 def generate_config_yaml(form: Dict):
     engine = form.get('engine')
-    engine_yaml = {"engine": f"chalkbox.engines.{engine.lower()}"}
+    engine_yaml = {"engine": f"chalkbox.engines.{engine}"}
 
     deep_update(DEFAULT, {"course_code": form.get("course_code"),
                           "assignment": form.get("assignment_id")})
