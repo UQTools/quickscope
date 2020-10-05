@@ -13,6 +13,7 @@ locations = {
     "tests": "solutions/correct/test",
     "correct": "solutions/correct",
     "faulty": "solutions/faulty",
+    "structure": "solutions/expected_structure",
     "linter_config": ""
 }
 
@@ -22,6 +23,18 @@ def make_session(session_id: str) -> Path:
     if not session_path.exists():
         session_path.mkdir(parents=True, exist_ok=True)
     return session_path
+
+
+def collapse_path_overlap(clean_file: str, component: str) -> str:
+    folders = locations[component].split("/")
+    if clean_file.startswith(locations[component]):
+        return ""
+    elif clean_file.startswith("/".join(folders[1:])):
+        return folders[0]
+    elif clean_file.startswith("/".join(folders[2:])):
+        return "/".join(folders[:1])
+    else:
+        return locations[component]
 
 
 def reconstruct(session_id: str, component: str, files) -> None:
@@ -42,7 +55,7 @@ def reconstruct(session_id: str, component: str, files) -> None:
         rmtree(session_path.joinpath(locations[component]))
     for file in files:
         clean_file = file[1:] if file.startswith('/') else file
-        component_folder = locations[component] if not clean_file.startswith(locations[component]) else ""
+        component_folder = collapse_path_overlap(clean_file, component)
         parent_directory = session_path.joinpath(component_folder).joinpath(Path(clean_file).parent)
         file_path = parent_directory.joinpath(Path(file).name)
         if not parent_directory.exists():
@@ -95,6 +108,13 @@ def upload_correct():
 
 @app.route("/faulty", methods=["POST"])
 def upload_faulty():
+    form = request.form
+    reconstruct(form.get("session"), form.get("component"), request.files)
+    return SUCCESS
+
+
+@app.route("/structure", methods=["POST"])
+def upload_structure():
     form = request.form
     reconstruct(form.get("session"), form.get("component"), request.files)
     return SUCCESS
