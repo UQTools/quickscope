@@ -48,12 +48,12 @@ def produce_config_file(config: Dict[str, Any], bundle_directory: Path) -> None:
         config_file.write(content)
 
 
-def produce_setup_script(setup_call: str, bundle_directory: Path) -> None:
+def produce_setup_script(setup_calls: str, bundle_directory: Path) -> None:
     file_loader = FileSystemLoader("quickscope/templates")
     environment = Environment(loader=file_loader)
     setup_template = environment.get_template("setup.sh")
     with open(f"{bundle_directory / 'setup.sh'}", "w") as run_script:
-        content = setup_template.render(setup_call=setup_call)
+        content = setup_template.render(setup_calls=setup_calls)
         run_script.write(content)
 
 
@@ -70,14 +70,13 @@ def produce_bundle(config: Dict[str, Any]) -> str:
     bundle_directory = Path(mkdtemp()) / "autograder"
     zip_path = f"{bundle_directory}"
     Path.mkdir(bundle_directory)
-    get_chalkbox(config.get("chalkbox_version", "v0.1.0"), bundle_directory)
+    get_chalkbox(config.get("chalkbox_version", "v0.2.0"), bundle_directory)
     produce_lib_directory(Path(config.get("dependencies")), bundle_directory)
     produce_solution_directory(Path(config.get("solutions")), bundle_directory)
     produce_config_file(config, bundle_directory)
-    setup_script = "add-apt-repository ppa:openjdk-r/ppa" \
-                   "apt-get install -y openjdk-14-jdk" \
-                   "java -version"
-    produce_setup_script(setup_call=setup_script,
+    setup_script = "apt-get install -y openjdk-11-jdk\n" \
+        "java -version"
+    produce_setup_script(setup_calls=setup_script,
                          bundle_directory=bundle_directory)
     produce_run_script(run_call="java -jar chalkbox.jar config.yml",
                        bundle_directory=bundle_directory)

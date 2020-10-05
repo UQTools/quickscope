@@ -14,6 +14,8 @@ DEFAULT = {
 }
 
 JAVA = {
+    "correctSolution": "solutions/correct/src/",
+    "dependencies": "",
     "conformance": {
         "weighting": 0,
         "expectedStructure": "solutions/correct_structure/",
@@ -22,7 +24,6 @@ JAVA = {
     "functionality": {
         "weighting": 0,
         "testDirectory": "solutions/correct/test/",
-        "violationPenalty": 0
     },
     "junit": {
         "weighting": 0,
@@ -68,7 +69,7 @@ def get_dependencies(dependency_path: Path) -> List[str]:
 
 def generate_config_yaml(form: Dict):
     engine = form.get('engine')
-    engine_yaml = {"engine": f"chalkbox.engines.{engine.lower()}"}
+    engine_yaml = {"engine": f"chalkbox.engines.{engine}"}
 
     deep_update(DEFAULT, {"course_code": form.get("course_code"),
                           "assignment": form.get("assignment_id"),
