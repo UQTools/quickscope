@@ -72,7 +72,6 @@ class JavaForm extends Component {
                 console.log("Not a file")
             } else {
                 let file = this.state[component][0]
-                console.log("***", file);
                 formData.append(file.path, file, file.path);
             }
         } else {
@@ -133,7 +132,7 @@ class JavaForm extends Component {
 
     handleWeightingChange(event) {
         let newState = { ...this.state };
-        newState[event.target.name].weighting = event.target.value;
+        newState[event.target.name].weighting = Number(event.target.value);
         this.setState(newState);
         this.updateStages();
     }
@@ -151,7 +150,7 @@ class JavaForm extends Component {
 
     handlePenaltyChange(event) {
         let newState = { ...this.state };
-        newState[event.target.name].violationPenalty = event.target.value;
+        newState[event.target.name].violationPenalty = Number(event.target.value);
         this.setState(newState);
         this.updateStages();
     }
