@@ -5,7 +5,7 @@ SETUP_SCRIPTS = {
 }
 
 DEFAULT = {
-    "course_code": None,
+    "courseCode": None,
     "assignment": None,
     "submission": "/autograder/submission/",
     "outputFile": "/autograder/results/results.json",

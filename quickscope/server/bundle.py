@@ -70,7 +70,7 @@ def produce_config_file(form: Dict[str, Any], bundle_directory: Path) -> None:
     engine = form.get('engine')
     engine_yaml = {"engine": f"chalkbox.engines.{engine}"}
     dependencies = get_dependencies(form.get("dependencies"))
-    default = deep_update(DEFAULT, {"course_code": form.get("course_code"),
+    default = deep_update(DEFAULT, {"courseCode": form.get("course_code"),
                                     "assignment": form.get("assignment_id"),
                                     "dependencies": dependencies})
 
