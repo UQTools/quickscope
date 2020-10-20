@@ -5,7 +5,7 @@ bundle in Quickscope, using the Java Engine for ChalkBox.
 
 ## Generic Setup
 
-1. Visit http://quickscope.uqcloud.net and log in with your UQ credentials.
+1. Visit [http://quickscope.uqcloud.net](http://quickscope.uqcloud.net) and log in with your UQ credentials.
 1. Choose a course code and assignment identifier for the autograder. These
 will be displayed in the instructor-facing output for debugging purposes each
 time the autograder runs.
@@ -165,8 +165,38 @@ faulty
 
 ### Checkstyle
 
-TODO
+After enabling the Checkstyle stage by clicking the checkbox under Java Engine
+Configuration, the violation penalty can be changed by entering a number in the
+input field. This number represents the number of marks deducted for each
+style violation detected by the Checkstyle tool when run on the `src/`
+directory of the submitted assignment.
+
+A text input field is provided for specifying paths that should be excluded
+from being checked for style violations by the Checkstyle tool. Excluded paths
+can be directories (using a trailing slash) or individual files.
+If a directory is specified, the entire directory will be ignored when
+checking for style violations.
+This functionality can be useful when the assignment contains code provided by
+course staff that is not compliant with the style guide, for example,
+a package containing GUI-related code.
+
+To add an excluded path, enter the path in the input field, ensuring the path
+is relative to the root directory of the submission, `/autograder/submission/`.
+Then, click the "+" button inside the input field.
+The path will display under "Excluded Paths".
+
+A file drop zone is provided to specify the configuration file to be used
+by the Checkstyle tool.
+This is an `.xml` file containing a list of all violation types to detect,
+and any associated options.
+
+![Checkstyle](../_static/images/checkstyle.png)
 
 ## Generating and Uploading Autograder
 
-TODO
+Finally, once all stages have been configured, the autograder is ready to be
+generated.
+Simply click the "Generate Autograder Bundle" button at the bottom of the page,
+and a `.zip` file containing the entire autograder suite will be downloaded
+automatically.
+This file can then be uploaded to Gradescope.
