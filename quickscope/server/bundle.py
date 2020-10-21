@@ -112,14 +112,16 @@ def produce_bundle(config: Dict[str, Any]) -> str:
     zip_path = f"{bundle_directory}"
     Path.mkdir(bundle_directory)
     get_chalkbox(config.get("chalkbox_version", "v0.2.0"), bundle_directory)
-    produce_lib_directory(Path(config.get("dependencies")), bundle_directory)
-    produce_solution_directory(Path(config.get("solutions")), bundle_directory)
-    produce_config_file(config, bundle_directory)
     engine = config.get("engine")
-    setup_script = SETUP_SCRIPTS.get(engine)
+
     linter_config: Path = config.get("session_directory").joinpath("checkstyle.xml")
     if engine == "JavaEngine" and linter_config.exists():
+        produce_lib_directory(Path(config.get("dependencies")), bundle_directory)
+        produce_solution_directory(Path(config.get("solutions")), bundle_directory)
         copyfile(linter_config, bundle_directory.joinpath("checkstyle.xml"))
+
+    produce_config_file(config, bundle_directory)
+    setup_script = SETUP_SCRIPTS.get(engine)
     produce_setup_script(setup_calls=setup_script,
                          bundle_directory=bundle_directory)
     produce_run_script(run_call="java -jar chalkbox.jar config.yml",
