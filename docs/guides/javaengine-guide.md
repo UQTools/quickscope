@@ -73,7 +73,28 @@ correct
 
 The correct solution directory should contain all the solution code for the
 assignment inside `src/`, as well as all the tests to be run against the
-student submission (if the functionality stage is enabled) in `test/`. 
+student submission (if the functionality stage is enabled) in `test/`.
+
+#### Test Visibility
+
+To provide immediate feedback to students on submission, a subset of the
+uploaded JUnit tests in the `test/` directory can be marked as visible at the
+time of student submission, rather than the default of only after the grades
+have been published/finalised for the assignment.
+Immediately visible tests will appear in the results section when a student
+makes a submission, along with the mark received for that test and the test
+output if it failed. 
+
+To mark an individual JUnit test as visible, use the `@Deprecated` annotation.
+For example:
+
+```java
+@Test
+@Deprecated
+public void toStringTest() {
+    assertEquals("A", intersection1.toString());
+}
+```
 
 ### Conformance
 
