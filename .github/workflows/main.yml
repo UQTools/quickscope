@@ -25,16 +25,13 @@ jobs:
       - name: Python
         uses: actions/setup-python@v2.1.4
         with:
-          python-version: 3.8
+          python-version: 3.8.2
       
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Build
-        run: |
-            pip install poetry
-            poetry shell
-            poetry install
+      - name: Poetry Install
+        uses: knowsuchagency/poetry-install@v2
 
       # Runs a single command using the runners shell
       - name: Test
