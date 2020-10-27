@@ -28,7 +28,7 @@ jobs:
       - name: Get Python 
         uses: actions/setup-python@v1
         with:
-          python-version: 3.8.2
+          python-version: 3.8
 
       - name: Get Poetry
         uses: Gr1N/setup-poetry@v4
