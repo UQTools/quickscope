@@ -110,7 +110,8 @@ def skipIfFailed(test_case: Type[unittest.TestCase] = None, test_name: str = Non
     return decorator
 
 
-def import_module(path: str) -> Tuple[Optional[ModuleType], Optional[Tuple[Type, Exception, TracebackType]]]:
+def import_module(path: str) -> Tuple[Optional[ModuleType],
+                                      Optional[Tuple[Type, Exception, TracebackType]]]:
     """
     Dynamically import the Python file (.py) at 'path' the
     """
@@ -556,7 +557,7 @@ class TestCase(unittest.TestCase, metaclass=_TestCaseMeta):
             obj = getattr(obj, name)
 
         if obj is None:
-            self.fail(msg=f"Got 'None' when checking if docstring was defined for a type")
+            self.fail(msg="Got 'None' when checking if docstring was defined for a type")
 
         # used over inspect.getdoc to require a doc string rather than inheriting it
         doc = getattr(obj, '__doc__', None)
