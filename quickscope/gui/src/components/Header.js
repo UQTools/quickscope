@@ -17,9 +17,7 @@ class Header extends Component {
             <React.Fragment>
                 <AppBar>
                     <Toolbar>
-                        <Typography variant="h6" color="inherit" style={styles.title}>
-                            Quickscope
-                        </Typography>
+                        <img src="public/dark_landscape.png" alt="logo" height={"40px"}/>
                     </Toolbar>
                 </AppBar>
                 <Toolbar /> {/* adds spacing for the fixed appbar */}

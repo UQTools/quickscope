@@ -63,10 +63,14 @@ class Form extends Component {
         case 'JavaEngine':
           return <JavaForm
               session={this.state.session}
+              engine={this.state.engine}
               onChangeStages={(newStages) => this.handleChangeJavaStages(newStages)}
             />;
         case 'PythonEngine':
-          return <PythonForm session={this.state.session} />;
+          return <PythonForm
+              session={this.state.session}
+              engine={this.state.engine}
+          />;
         default:
           return '';
       }

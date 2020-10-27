@@ -1,14 +1,13 @@
 from pathlib import Path
 from typing import Dict, Mapping
 from shutil import rmtree
-from requests import request
 from flask import Response
 
 from quickscope.server import app
 
 
 SUCCESS = Response(status=200)
-FAILURE = Response(status=501)
+FAILURE = Response(status=500)
 
 
 def make_session(session_id: str) -> Path:
@@ -57,7 +56,39 @@ def reconstruct(session_id: str, component: str, files, locations: Dict[str, str
         file_path.unlink(missing_ok=True)
 
         if file_name:
-            file = request.files.get(file_name)
+            file = files.get(file_name)
+            file.save(file_path)
+
+        return
+
+    if component == "visible":
+        file_name = None
+
+        for file_name_ in files:
+            file_name = file_name_
+
+        file_path = session_path.joinpath(locations.get("visible")).joinpath("visible_tests.txt")
+        file_path.unlink(missing_ok=True)
+
+        if file_name:
+            file_path.parent.mkdir(parents=True, exist_ok=True)
+            file = files.get(file_name)
+            file.save(file_path)
+
+        return
+
+    if component == "formatter":
+        file_name = None
+
+        for file_name_ in files:
+            file_name = file_name_
+
+        file_path = session_path.joinpath(locations.get("formatter")).joinpath("formatter.py")
+        file_path.unlink(missing_ok=True)
+
+        if file_name:
+            file_path.parent.mkdir(parents=True, exist_ok=True)
+            file = files.get(file_name)
             file.save(file_path)
 
         return
@@ -68,7 +99,7 @@ def reconstruct(session_id: str, component: str, files, locations: Dict[str, str
         rmtree(session_path.joinpath(locations[component]))
     for file in files:
         clean_file = file[1:] if file.startswith('/') else file
-        component_folder = collapse_path_overlap(clean_file, component)
+        component_folder = collapse_path_overlap(clean_file, component, locations)
         parent_directory = session_path.joinpath(component_folder)\
             .joinpath(Path(clean_file).parent)
         file_path = parent_directory.joinpath(Path(file).name)
@@ -77,4 +108,4 @@ def reconstruct(session_id: str, component: str, files, locations: Dict[str, str
             parent_directory.mkdir(parents=True, exist_ok=True)
         if file_path.exists():
             file_path.unlink(missing_ok=True)
-        request.files.get(file).save(file_path)
+        files.get(file).save(file_path)

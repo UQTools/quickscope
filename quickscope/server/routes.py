@@ -31,12 +31,18 @@ def generate():
                                as_attachment=True)
 
 
-@app.route("/<component:component>")
+@app.route("/upload/<component>", methods=["POST"])
 def upload_locations(component: str):
     form = request.form
+    print(form.get("session"))
     engine = form.get("engine")
-    locations = LOCATIONS.get(engine, None)
-    if not component not in locations.keys():
+    if not engine or component != form.get("component"):
         return FAILURE
+
+    locations = LOCATIONS.get(engine, None)
+    if component not in locations.keys():
+        return FAILURE
+
     reconstruct(form.get("session"), form.get("component"), request.files, locations)
+
     return SUCCESS
