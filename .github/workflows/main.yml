@@ -29,6 +29,7 @@ jobs:
         uses: hericlesme/PyPoetry@master
         with:
           python_version: 3.8.2
+          args: install
 
       # Runs a single command using the runners shell
       - name: Test
