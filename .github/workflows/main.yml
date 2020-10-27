@@ -24,18 +24,32 @@ jobs:
       
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Poetry Install
-        uses: hericlesme/PyPoetry@master
+      
+      - name: Get Python 
+        uses: actions/setup-python@v1
         with:
-          python_version: 3.8.2
-          args: install
+          python-version: 3.8.2
+
+      - name: Get Poetry
+        uses: Gr1N/setup-poetry@v4
+      
+      - name: Install Dependencies 
+        run: poetry install
+      
+      - name: Install Node
+        uses: actions/setup-node@v2.1.2
+      
+      - name: Install Yarn
+        uses: CultureHQ/actions-yarn@v1.0.1
+      
+      - name: Build Front-End
+        run: poetry run build
 
       # Runs a single command using the runners shell
       - name: Test
-        run: pytest
+        run: poetry run pytest
 
       # Runs a set of commands using the runners shell
       - name: Lint
-        run: flake8 quickscope
+        run: poetry run flake8 quickscope
   
