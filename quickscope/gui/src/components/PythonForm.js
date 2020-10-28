@@ -26,28 +26,29 @@ class PythonForm extends Component {
 
         formData.append("session", this.props.session);
         formData.append("component", component);
+        formData.append("engine", this.props.engine)
+        formData.append("runner", this.state.runner)
 
-        if (component === "included") {
-            this.state[component].forEach(file => {
-                console.log(file);
-                if (typeof file !== File) {
-                    return;
-                }
-                formData.append(file.path, file, file.path)
-            });
-        } else {
-            if (!(this.state[component][0] instanceof File)) {
-                return;
+        if (component === "linter_config") {
+            let obj = this.state[component][0];
+            console.log(obj)
+            if (!obj || !obj.path) {
+                console.log("Not a file")
             } else {
                 let file = this.state[component][0]
                 formData.append(file.path, file, file.path);
             }
+        } else {
+            this.state[component].forEach(file => {
+                console.log(file);
+                formData.append(file.path, file, file.path)
+            });
         }
 
         console.log(formData);
         axios({
             method: "POST",
-            url: "http://0.0.0.0:5000/" + component,
+            url: "http://0.0.0.0:5000/upload/" + component,
             data: formData,
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -85,7 +86,7 @@ class PythonForm extends Component {
                         <TextField
                             label="File Name"
                             variant="outlined"
-                            helperText="Name of submitted file without extension, e.g. a1"
+                            helperText="Name of submitted file (without extension, e.g. a1)"
                             autoFocus
                             onChange={(event) => {
                                 this.setState({fileName: event.target.value})
@@ -96,21 +97,28 @@ class PythonForm extends Component {
                 <Grid item>
                     <FormControl fullWidth>
                         <TextField
-                            label="Expected Extension"
+                            label="Test Runner Name"
                             variant="outlined"
-                            helperText="Expected file extension of submitted file, e.g. .py"
+                            helperText="(Just the) Name of the test file (with extension, e.g. test_a1.py). This should be included in the `included` directory."
                             autoFocus
                             onChange={(event) => {
-                                this.setState({expectedExtension: event.target.value})
+                                this.setState({runner: event.target.value})
                             }}
                         />
                     </FormControl>
                 </Grid>
                 <Grid item>
                     <DropzoneArea
+                        filesLimit={1000}
+                        dropzoneText="Drop included directory here..."
+                        onChange={(files) => this.setAndSend(files, 'included')}
+                    />
+                </Grid>
+                <Grid item>
+                    <DropzoneArea
                         filesLimit={1}
-                        dropzoneText="Drop test runner here..."
-                        onChange={(files) => this.setAndSend(files, 'runner')}
+                        dropzoneText="Drop visible tests file here..."
+                        onChange={(files) => this.setAndSend(files, 'visible')}
                     />
                 </Grid>
                 <Grid item>
@@ -118,13 +126,6 @@ class PythonForm extends Component {
                         filesLimit={1}
                         dropzoneText="Drop JSON formatter here..."
                         onChange={(files) => this.setAndSend(files, 'formatter')}
-                    />
-                </Grid>
-                <Grid item>
-                    <DropzoneArea
-                        filesLimit={1000}
-                        dropzoneText="Drop included directory here..."
-                        onChange={(files) => this.setAndSend(files, 'included')}
                     />
                 </Grid>
             </Grid>

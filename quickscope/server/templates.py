@@ -2,9 +2,8 @@ from json import loads
 from pathlib import Path
 from typing import Any, Dict
 
-
 SETUP_SCRIPTS = {
-    "JavaEngine": "apt-get install -y openjdk-11-jdk\n" 
+    "JavaEngine": "apt-get install -y openjdk-11-jdk\n"
                   "java -version",
     "PythonEngine": "apt install python3\n"
 }
@@ -53,7 +52,9 @@ JAVA_LOCATIONS = {
 }
 
 PYTHON_LOCATIONS = {
-    
+    "included": "included/",
+    "visible": "included/",
+    "formatter": "included/"
 }
 
 LOCATIONS = {
@@ -62,8 +63,12 @@ LOCATIONS = {
 }
 
 PYTHON = {
-    "included": [],
-    "visible": None
+    "visible": "./visible_tests.txt",  # Relative to includes for some reason
+    "formatter": "./formatter.py",  # Relative to includes for some reason
+    "expectedExtension": ".py",
+    "included": "autograder/included",
+    "fileName": None,
+    "runner": None,
 }
 
 
@@ -83,7 +88,7 @@ def populate_config(config: Dict[str, Any],
         }}
     elif engine == "PythonEngine":
         config = {**config, **{
-
+            "included": session_directory.joinpath(locations.get("included"))
         }}
     else:
         raise NotImplementedError

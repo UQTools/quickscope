@@ -74,6 +74,7 @@ class JavaForm extends Component {
 
         formData.append("session", this.props.session);
         formData.append("component", component);
+        formData.append("engine", this.props.engine)
 
         if (component === "linter_config") {
             let obj = this.state[component][0];
@@ -93,7 +94,7 @@ class JavaForm extends Component {
 
         axios({
             method: "POST",
-            url: "http://0.0.0.0:5000/" + component,
+            url: "http://0.0.0.0:5000/upload/" + component,
             data: formData,
             headers: {
                 'Access-Control-Allow-Origin': '*',

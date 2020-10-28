@@ -52,10 +52,11 @@ def get_dependencies(dependency_path: Path) -> List[str]:
     return dependencies
 
 
-def reformat_test_classes(config: Dict[str, Any], session_directory: Path):
+def reformat_test_classes(config: Dict[str, Any], session_directory: Path) -> None:
     test_directory: Path = session_directory / "solutions/correct/test"
     test_classes = config.get("junit").get("assessableTestClasses")
     java_paths = []
+
     for test_class in test_classes:
         matches = list(test_directory.glob(f"**/{test_class}"))
         if not matches:
@@ -63,23 +64,29 @@ def reformat_test_classes(config: Dict[str, Any], session_directory: Path):
         match = matches[0]
         text = f"{'.'.join(match.parts[5:])}".replace(".java", "")
         java_paths.append(text)
+
     config["junit"]["assessableTestClasses"] = java_paths
 
 
 def produce_config_file(form: Dict[str, Any], bundle_directory: Path) -> None:
     engine = form.get('engine')
     engine_yaml = {"engine": f"chalkbox.engines.{engine}"}
-    dependencies = get_dependencies(form.get("dependencies"))
+
     default = deep_update(DEFAULT, {"courseCode": form.get("course_code"),
-                                    "assignment": form.get("assignment_id"),
-                                    "dependencies": dependencies})
+                                    "assignment": form.get("assignment_id")})
 
     if engine == "JavaEngine":
+        dependencies = get_dependencies(form.get("dependencies"))
+        default = deep_update(default, {"dependencies": dependencies})
         java = deep_update(JAVA, form.get("java_stages"))
         settings = {**default, **java}
         reformat_test_classes(settings, form.get("session_directory"))
     elif engine == "PythonEngine":
-        settings = {**default, **PYTHON}
+        python = deep_update(PYTHON, {
+            "fileName": form.get("fileName"),
+            "runner": form.get("runner"),
+        })
+        settings = {**default, **python}
     else:
         raise NotImplementedError
 
@@ -107,6 +114,18 @@ def produce_run_script(run_call: str, bundle_directory: Path = None) -> None:
         run_script.write(content)
 
 
+def produce_included_directory(source: Path, bundle_directory: Path) -> None:
+    copytree(f"{source}", f"{bundle_directory}")
+
+
+def copy_testrunner(bundle_directory: Path) -> None:
+    testrunner = Path("quickscope/templates/testrunner.py")
+    if testrunner.exists():
+        copyfile(testrunner, bundle_directory / "included/testrunner.py")
+    else:
+        raise NameError
+
+
 def produce_bundle(config: Dict[str, Any]) -> str:
     bundle_directory = Path(mkdtemp()) / "autograder"
     zip_path = f"{bundle_directory}"
@@ -114,11 +133,17 @@ def produce_bundle(config: Dict[str, Any]) -> str:
     get_chalkbox(config.get("chalkbox_version", "v0.2.0"), bundle_directory)
     engine = config.get("engine")
 
-    linter_config: Path = config.get("session_directory").joinpath("checkstyle.xml")
-    if engine == "JavaEngine" and linter_config.exists():
+    if engine == "JavaEngine":
         produce_lib_directory(Path(config.get("dependencies")), bundle_directory)
         produce_solution_directory(Path(config.get("solutions")), bundle_directory)
-        copyfile(linter_config, bundle_directory.joinpath("checkstyle.xml"))
+        linter_config: Path = config.get("session_directory").joinpath("checkstyle.xml")
+        if linter_config.exists():
+            copyfile(linter_config, bundle_directory.joinpath("checkstyle.xml"))
+    elif engine == "PythonEngine":
+        produce_included_directory(config.get("included"), bundle_directory.joinpath("included"))
+        copy_testrunner(bundle_directory)
+    else:
+        raise NotImplementedError
 
     produce_config_file(config, bundle_directory)
     setup_script = SETUP_SCRIPTS.get(engine)
