@@ -49,5 +49,5 @@ jobs:
         run: poetry run pytest
         
       - name: Lint
-        run: pwd && ls quickscope && poetry run flake8
+        run: poetry run flake8 quickscope
   
