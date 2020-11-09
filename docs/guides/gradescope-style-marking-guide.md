@@ -12,24 +12,24 @@ In each course, assignments can be found under the `Assignments` tab.
 
 This shows all the current assignments for the course.
 
-![Assignments](../_static/images/gradescope_assignments.png)
+![](../_static/images/gradescope_assignments.png)
 
-To mark a specific assignment, select it from the list.
+To mark a specific assignment, click on its name in the list.
  
-Then select `Grade Submissions` in the right hand menu to navigate to 
+Then select `Grade Submissions` in the left-hand menu to navigate to 
 the questions in the assignment.
 
 <img src="https://github.com/UQTools/quickscope/raw/master/docs/_static/images/gradescope_marking_menu.png" alt="menu" width="150">
 <br>
 
-For this assignment style marking is graded under one question.
+For this assignment, style marking is graded under one question, in this case,
+"Manual style".
 
-![Questions](../_static/images/gradescope_assignment_questions.png)
+![](../_static/images/gradescope_assignment_questions.png)
 
-Selecting the question name will take you to a list of the names of students.
+Selecting the name of the question will take you to a list of the names of students.
 
-
-##Marking
+## Marking
 
 The Gradescope marking interface uses a number of shortcut to assist with marking.
 Please watch the following videos to learn about the interface and these shortcuts.
@@ -42,22 +42,23 @@ Please watch the following videos to learn about the interface and these shortcu
 Comments can be added to student code by clicking on a section of student code. 
 A comment box will then appear where you can add your comment and then save.
 
-![CommentBox](../_static/images/gradescope_comment_box.png) 
+![](../_static/images/gradescope_comment_box.png)
+
 The student will be able to view comments linked to the code that you clicked on.
 
 ## Shortcuts
 
-`1 - 9` - Select Rubric Group  
-`QWERTY` - Select Rubric Item
+* `1 - 9` - Select Rubric Group  
+* `QWERTY` - Select Rubric Item
   
-`Left Arrow` - Previous Student  
-`Right Arrow` - Next Student  
-`z` - Next Ungraded 
+* `Left Arrow` - Previous Student  
+* `Right Arrow` - Next Student  
+* `z` - Next Ungraded 
   
-`a` - Show all submissions 
+* `a` - Show all submissions 
   
-`.` - Next Question  
-`,` - Previous Question
+* `.` - Next Question  
+* `,` - Previous Question
 
 
 

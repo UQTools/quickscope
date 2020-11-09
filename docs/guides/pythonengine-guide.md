@@ -12,27 +12,27 @@ time the autograder runs.
 1. Choose the PythonEngine under the 'Engine' dropdown box. A set of
 engine-specific options will appear below.
 
-![Generic setup](../_static/images/quickscope-python-generic.png)
+![](../_static/images/quickscope-python-generic.png)
 
 ## Python Engine Configuration
 
 Here you will be required to provide the needed files for the engine.
 
-You will first have to provide the expected name of the student submitted file (e.g a1)
-and the name of test script (e.g test_a1.py).
+You will first have to provide the expected name of the student submitted file (e.g `a1`)
+and the name of test script (e.g `test_a1.py`).
 
-![Text setup](../_static/images/quickscope-python-text.png)
+![](../_static/images/quickscope-python-text.png)
 
 ### Included Folder
 You will need to provide a folder of included files to Quickscope containing:
-* The test script and dependencies (e.g. for CSSE1001 test_a1.py and testrunner.py)
+* The test script and dependencies (e.g. for CSSE1001, `test_a1.py` and `testrunner.py`)
 
 * Support files for testing (e.g. config files)
 
-* Support files for student code (any file that have been provided to students as support code)
+* Support files for student code (any files that have been provided to students as support code)
 
 
-This is an example included folder for CSSE1001 A1 2019:
+This is an example of an included folder for CSSE1001, using the 2019 assignment 1:
 ```
 included
 │ 
@@ -62,11 +62,11 @@ in the file will be visible to students each time they upload a submission to Gr
 
 
 ### JSON Formatter
-You will need to provide a python script that reformats the test runner output
-to be in a form accepted by Gradescope.
+You will need to provide a Python script that reformats the test runner output
+to be in a format accepted by Gradescope.
 
-A JSON Formatter for the current CSSE1001 Test Runner can be found at:
-[JSON Formatter]([https://github.com/UQTools/chalkbox/blob/master/test/resources/csse1001/included/gradescopeJSONFormatter.py)
+A JSON Formatter for the current CSSE1001 Test Runner can be found 
+[on GitHub]([https://github.com/UQTools/chalkbox/blob/master/test/resources/csse1001/included/gradescopeJSONFormatter.py).
 
 ## Generating and Uploading Autograder
 

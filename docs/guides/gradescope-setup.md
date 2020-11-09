@@ -39,7 +39,7 @@ submission.
 In the "Outline" section, an additional question should be created for the
 manual style component, including the weighting assigned to manual style.
 
-![Outline](../_static/images/outline.png)
+![](../_static/images/outline.png)
 
 ## Autograder
 
@@ -51,4 +51,23 @@ After uploading the autograder, you can test that it works correctly by
 clicking "Test Autograder" and uploading a student submission, for example, the
 correct solution for the assignment written by course staff.
 
-![Autograder](../_static/images/autograder.png)
+![](../_static/images/autograder.png)
+
+## Other Settings
+
+By clicking the "Settings" link at the bottom of the left sidebar after entering
+the assignment page, other various settings can be enabled that are not present
+in the "Assignment Settings" panel shown when creating the assignment. Key
+changes that can be made here include:
+* Specifying which submission methods are allowed. Submission via direct file
+  upload, GitHub and Bitbucket can be enabled or disabled.
+* Specifying ignored files. Files that match these conditions will be filtered
+  out from a student's submission before being processed with ChalkBox. This may
+  be useful if ChalkBox is having problems with certain types of files.
+* Changing the autograder container's system specifications. More CPU and RAM
+  may improve performance.
+* Changing the autograder timeout. The default timeout is 10 minutes before
+  an autograder instance is killed, however this can be increased up to 40
+  minutes.
+  
+![Other Assignment Settings](../_static/images/gradescope-setup_other_settings.png)

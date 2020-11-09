@@ -12,7 +12,7 @@ time the autograder runs.
 1. Choose the JavaEngine under the 'Engine' dropdown box. A set of
 engine-specific options will appear below.
 
-![Generic setup](../_static/images/generic_setup.png)
+![](../_static/images/generic_setup.png)
 
 ## Java Engine Configuration
 
@@ -30,7 +30,7 @@ will still be run, however no marks will be allocated to it.
 Immediately below the options for each stage are file drop zones for dependency
 libraries and the correct solution directory, explained below.
 
-![Java Engine Configuration](../_static//images/javaengine_config.png)
+![](../_static//images/javaengine_config.png)
 
 ### Dependencies
 
@@ -38,7 +38,7 @@ Any dependency JARs that are required by the assignment should be added here,
 for example, JUnit and Hamcrest. If the Checkstyle stage is enabled, the
 Checkstyle JAR should be added here as well.
 
-![Dependencies](../_static//images/dependencies.png)
+![](../_static//images/dependencies.png)
 
 ### Correct Solution
 
@@ -145,7 +145,7 @@ below the correct solution drop zone.
 Once a file has been selected, it will appear in the list of Assessable Test
 Classes. To remove a file from the list, simply click its rounded box again.
 
-![JUnit](../_static/images/junit.png)
+![](../_static/images/junit.png)
 
 Below the list of assessable test classes, there is a file drop zone for
 uploading a directory containing a set of faulty solutions to the assignment,
@@ -211,7 +211,7 @@ by the Checkstyle tool.
 This is an `.xml` file containing a list of all violation types to detect,
 and any associated options.
 
-![Checkstyle](../_static/images/checkstyle.png)
+![](../_static/images/checkstyle.png)
 
 ## Generating and Uploading Autograder
 
