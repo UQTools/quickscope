@@ -3,7 +3,7 @@
 This guide covers the process of style marking student 
 assignments in Gradescope.
 
-##Navigating to Marking Screen
+## Navigating to Marking Screen
 
 In each course, assignments can be found under the `Assignments` tab.
 
@@ -38,14 +38,14 @@ Please watch the following videos to learn about the interface and these shortcu
 
 [![Marking with Shortcuts](https://img.youtube.com/vi/VMM16gdREfg/0.jpg)](https://www.youtube.com/watch?v=VMM16gdREfg)
 
-##Commenting
+## Commenting
 Comments can be added to student code by clicking on a section of student code. 
 A comment box will then appear where you can add your comment and then save.
 
 ![CommentBox](../_static/images/gradescope_comment_box.png) 
 The student will be able to view comments linked to the code that you clicked on.
 
-##Shortcuts
+## Shortcuts
 
 `1 - 9` - Select Rubric Group  
 `QWERTY` - Select Rubric Item
