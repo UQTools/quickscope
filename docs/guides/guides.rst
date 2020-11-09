@@ -13,3 +13,4 @@ Guides for students, tutors and course coordinators using Quickscope.
    gradescope-setup
    gradescope-style-marking-guide
    gradescope-student-understand-results
+   gradescope-student-submission-guide
