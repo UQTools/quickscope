@@ -9,4 +9,7 @@ Guides for students, tutors and course coordinators using Quickscope.
 
 
    javaengine-guide
+   pythonengine-guide
    gradescope-setup
+   gradescope-style-marking-guide
+   gradescope-student-understand-results
