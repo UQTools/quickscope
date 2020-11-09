@@ -12,5 +12,5 @@ Guides for students, tutors and course coordinators using Quickscope.
    pythonengine-guide
    gradescope-setup
    gradescope-style-marking-guide
-   gradescope-student-understand-results
+   gradescope-student-results
    gradescope-student-submission-guide
