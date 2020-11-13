@@ -45,7 +45,7 @@ class Form extends Component {
 
         axios({
             method: "POST",
-            url: "http://0.0.0.0:5000/generate",
+            url: "/generate",
             data: formData,
             crossDomain: true,
             headers: {

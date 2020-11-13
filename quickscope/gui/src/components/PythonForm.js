@@ -48,7 +48,7 @@ class PythonForm extends Component {
         console.log(formData);
         axios({
             method: "POST",
-            url: "http://0.0.0.0:5000/upload/" + component,
+            url: "/upload/" + component,
             data: formData,
             headers: {
                 'Access-Control-Allow-Origin': '*',

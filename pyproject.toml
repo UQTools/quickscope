@@ -13,6 +13,7 @@ jinja2 = "^2.11.2"
 requests = "^2.24.0"
 flask_cors = "^3.0.9"
 PyYAML = "^5.3.1"
+uWSGI = "^2.0.19"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.0.1"
