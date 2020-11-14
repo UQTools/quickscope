@@ -57,6 +57,7 @@ jobs:
           host: ${{ secrets.HOST }}
           user: ${{ secrets.USER }}
           key: ${{ secrets.PRIVATE_KEY }}
+          source: ${{ secrets.SOURCE }}
           destination: ${{ secrets.TARGET }}
           ssh_before: rm -rf ${{ secrets.TARGET }}
           ssh_after: poetry shell && poetry install && poetry run build
