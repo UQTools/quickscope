@@ -51,7 +51,7 @@ jobs:
       - name: Lint
         run: poetry run flake8 quickscope
 
-      - name: Deploy
+      - name: Deployment
         uses: cell-5/c5-deploy-action@v0.1-alpha.2
         with:
           host: ${{ secrets.HOST }}
