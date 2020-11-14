@@ -60,6 +60,5 @@ jobs:
           chmod 700 "$SSH_PATH" && chmod 600 "$SSH_PATH/known_hosts" "$SSH_PATH/deploy_key"
           eval $(ssh-agent)
           ssh-add "$SSH_PATH/deploy_key"
-          ssh-keyscan -t rsa $INPUT_HOST >> "$SSH_PATH/known_hosts"
           ssh -i "$SSH_PATH/deploy_key" quickscope@quickscope.uqcloud.net "export PATH=PATH:/bin:/usr/bin:/home/quickscope/.local/bin && cd /home/quickscope/quickscope && git pull && source /home/quickscope/.cache/pypoetry/virtualenvs/quickscope-U2wvY4rh-py3.8/bin/activate && poetry run build"
   
