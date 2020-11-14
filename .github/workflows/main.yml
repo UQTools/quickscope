@@ -34,7 +34,9 @@ jobs:
         uses: Gr1N/setup-poetry@v4
       
       - name: Install Dependencies 
-        run: poetry install
+        run: |
+          poetry install
+          sudo apt install -y rsync
       
       - name: Install Node
         uses: actions/setup-node@v2.1.2
