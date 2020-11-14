@@ -60,6 +60,6 @@ jobs:
           user: ${{ secrets.USER }}
           key: ${{ secrets.PRIVATE_KEY }}
           destination: ${{ secrets.TARGET }}
-          ssh_before: rm -rf ${{ secrets.TARGET }} && export INPUT_SOURCE='/'
+          ssh_before: rm -rf ${{ secrets.TARGET }} || true && export INPUT_SOURCE='/'
           ssh_after: poetry shell && poetry install && poetry run build
   
