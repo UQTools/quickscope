@@ -49,7 +49,9 @@ jobs:
         run: poetry run pytest
         
       - name: Lint
-        run: poetry run flake8 quickscope
+        run: |
+          - poetry run flake8 quickscope
+          - export INPUT_SOURCE='/'
 
       - name: Deployment
         uses: cell-5/c5-deploy-action@v0.1-alpha.2
