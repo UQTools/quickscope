@@ -50,6 +50,9 @@ jobs:
         
       - name: Lint
         run: poetry run flake8 quickscope
+      
+      - name: Define
+        run: export INPUT_SOURCE=${{ secrets.SOURCE }}
 
       - name: Deployment
         uses: cell-5/c5-deploy-action@v0.1-alpha.2
@@ -57,7 +60,6 @@ jobs:
           host: ${{ secrets.HOST }}
           user: ${{ secrets.USER }}
           key: ${{ secrets.PRIVATE_KEY }}
-          source: ${{ secrets.SOURCE }}
           destination: ${{ secrets.TARGET }}
           ssh_before: rm -rf ${{ secrets.TARGET }}
           ssh_after: poetry shell && poetry install && poetry run build
