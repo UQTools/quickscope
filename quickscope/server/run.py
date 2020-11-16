@@ -1,3 +1,5 @@
+"""Utility class for running Quickscope"""
+
 from . import app
 
 

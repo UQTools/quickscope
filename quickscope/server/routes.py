@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from flask import render_template, request, send_from_directory
+from flask import render_template, request, send_from_directory, Response
 
 from . import app
 from .bundle import produce_bundle
@@ -9,12 +9,23 @@ from .utils import reconstruct, SUCCESS, FAILURE
 
 
 @app.route("/")
-def home():
+def home() -> str:
+    """
+    Serve the React front end bundle.
+
+    :return: the rendered template of the React index.html page.
+    """
     return render_template("index.html")
 
 
 @app.route("/generate", methods=["POST"])
 def generate():
+    """
+    Generates the bundle based on the uploaded files and the configuration settings passed through
+    in the form.
+
+    :return: a response that downloads the generated bundle to the client machine.
+    """
     form = request.form
     session_directory = Path(f"state/{form.get('session')}")
     locations = LOCATIONS.get(form.get("engine"))
@@ -31,7 +42,14 @@ def generate():
 
 
 @app.route("/upload/<component>", methods=["POST"])
-def upload_locations(component: str):
+def upload_locations(component: str) -> Response:
+    """
+    Uploads a file to the correct location in the appropriate state directory
+    (based on the session id, the )
+    :param component: the component of the bundle that is being uploaded, this will determine the
+    subdirectory in the state directory based on the engine.
+    :return: a response object indicating success or failure.
+    """
     form = request.form
     print(form.get("session"))
     engine = form.get("engine")
