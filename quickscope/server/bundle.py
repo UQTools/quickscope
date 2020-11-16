@@ -14,6 +14,13 @@ CHALKBOX_URL = "https://github.com/UQTools/chalkbox/releases/download/"
 
 
 def get_chalkbox(version: str, bundle_directory: Path) -> Path:
+    """
+    Procures the specified version of ChalkBox from GitHub releases.
+    :param version: the version of ChalkBox to get (e.g. v0.2.0)
+    :param bundle_directory: the path to the temporary directory in which the bundle is
+    constructed
+    :return: the path to the ChalkBox JAR in the temporary bundle directory.
+    """
     response = get(f"{CHALKBOX_URL}/{version}/chalkbox.jar", allow_redirects=True)
     file_path = bundle_directory / "chalkbox.jar"
     with open(f"{file_path}", "wb") as chalkbox:
