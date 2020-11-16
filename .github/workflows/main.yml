@@ -54,12 +54,11 @@ jobs:
         run: poetry run flake8 quickscope
 
       - name: Deployment
-        uses: nicklambourne/deploy-action@v0.1
-        with:
-          host: ${{ secrets.HOST }}
-          user: ${{ secrets.USER }}
-          key: ${{ secrets.PRIVATE_KEY }}
-          destination: ${{ secrets.TARGET }}
-          ssh_before: rm -rf ${{ secrets.TARGET }} && export INPUT_SOURCE='/'
-          ssh_after: poetry shell && poetry install && poetry run build
+        run: |
+          SSH_PATH="$HOME/.ssh" && mkdir -p "$SSH_PATH" && touch "$SSH_PATH/known_hosts"
+          echo "${{ secrets.PRIVATE_KEY }}" > "$SSH_PATH/deploy_key"
+          chmod 700 "$SSH_PATH" && chmod 600 "$SSH_PATH/known_hosts" "$SSH_PATH/deploy_key"
+          eval $(ssh-agent)
+          ssh-add "$SSH_PATH/deploy_key"
+          ssh -i "$SSH_PATH/deploy_key" -o StrictHostKeyChecking=no ${{ secrets.USER }}@${{ secrets.HOST }} "export PATH=PATH:/bin:/usr/bin:/home/${{ secrets.USER }}/.local/bin && cd /home/${{ secrets.USER }}/quickscope && git pull && source /home/${{ secrets.USER }}/.cache/pypoetry/virtualenvs/quickscope-U2wvY4rh-py3.8/bin/activate && poetry run build && echo "${{ secrets.PW }}" | sudo -S systemctl restart uwsgi"
   
