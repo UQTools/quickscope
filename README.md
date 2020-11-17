@@ -46,7 +46,7 @@ poetry run flask run
 You should now be able to access the service through your browser at `0.0.0.0:5000`.
 
 ### Documentation
-Documentation for the project is available at [quickscope.readthedocs.org](quickscope.readthedocs.org). 
+Documentation for the project is available at [quickscope.readthedocs.org](https://quickscope.readthedocs.org). 
 This includes guides on how to use the tool and adapt it to your needs.
 
 ### Copyright & License
