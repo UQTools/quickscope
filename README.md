@@ -10,7 +10,7 @@ Quickscope is used to build [Gradescope](https://www.gradescope.com/) autograder
 [Chalkbox](https://github.com/uqtools/chalkbox), the University of Queensland ITEE school's
 automatic marking system for programming assignments. 
 
-Quickscope will eventually be hosted at [quickscope.uqcloud.net](https://quickscope.uqcloud.net) for 
+Quickscope is hosted at [quickscope.uqcloud.net](https://quickscope.uqcloud.net) for 
 public consumption.
 
 ### Key Features
