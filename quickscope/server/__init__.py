@@ -4,7 +4,6 @@ from flask_cors import CORS
 from .config import Config
 
 
-
 static_path = str(Path("quickscope/gui/dist/").absolute())
 
 app = Flask(__name__, static_folder=static_path,
