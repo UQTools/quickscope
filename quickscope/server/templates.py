@@ -81,13 +81,13 @@ def populate_config(config: Dict[str, Any],
     default values for the specified engine. User settings will override defaults.
 
     :param config: the basic settings common to all configurations: course code, assignment ID,
-    engine, and session directory
+        engine, and session directory
     :param form: the form (immutable dictionary) attached to the Flask request containing the
-    user-specified settings
+        user-specified settings
     :param session_directory: the path to the directory associated with the user session matching
-    the session ID created by the React front-end
+        the session ID created by the React front-end
     :param locations: the mapping from required components to their respective location in the
-    bundle (e.g. PYTHON_LOCATIONS or JAVA_LOCATIONS, above)
+        bundle (e.g. PYTHON_LOCATIONS or JAVA_LOCATIONS, above)
     :return: the compiled configuration dictionary
     """
     engine = config.get("engine")

@@ -18,8 +18,7 @@ def get_chalkbox(version: str, bundle_directory: Path) -> Path:
     Procures the specified version of ChalkBox from GitHub releases.
 
     :param version: the version of ChalkBox to get (e.g. v0.2.0)
-    :param bundle_directory: the path to the temporary directory in which the bundle is
-    constructed
+    :param bundle_directory: the path to the temporary directory in which the bundle is constructed
     :return: the path to the ChalkBox JAR in the temporary bundle directory.
     """
     response = get(f"{CHALKBOX_URL}/{version}/chalkbox.jar", allow_redirects=True)
@@ -62,7 +61,7 @@ def produce_solution_directory(solution_directory: Path, bundle_directory: Path)
     Copies the solution directory uploaded by the user to the temporary bundle directory.
 
     :param solution_directory: the directory containing the correct and faulty solutions uploaded
-    by the user
+        by the user
     :param bundle_directory: the temporary directory where the bundle is being created
     """
     solutions_directory = bundle_directory.joinpath("solutions")
@@ -94,7 +93,7 @@ def reformat_test_classes(config: Dict[str, Any], session_directory: Path) -> No
 
     :param config: the config dictionary containing the test classes to update
     :param session_directory: the directory associated with the user's session where the user's
-    uploads are stored
+        uploads are stored
     """
     test_directory: Path = session_directory / "solutions/correct/test"
     test_classes = config.get("junit").get("assessableTestClasses")
@@ -118,7 +117,7 @@ def produce_config_file(form: Dict[str, Any], bundle_directory: Path) -> None:
     directory.
 
     :param form: the immutable form dictionary from the request object populated by the React
-    front-end
+        front-end
     :param bundle_directory: the temporary directory where the bundle is being created
     """
     engine = form.get('engine')
@@ -154,7 +153,7 @@ def produce_setup_script(setup_calls: str, bundle_directory: Path) -> None:
     places it in the bundle.
 
     :param setup_calls: the calls made to e.g. install packages, set the PATH etc. These come from
-    .templates.py
+        .templates.py
     :param bundle_directory: the temporary directory where the bundle is being created
     """
     file_loader = FileSystemLoader("quickscope/templates")

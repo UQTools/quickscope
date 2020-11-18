@@ -48,7 +48,7 @@ def upload_locations(component: str) -> Response:
     id and the component type).
 
     :param component: the component of the bundle that is being uploaded, this will determine the
-    subdirectory in the state directory based on the engine
+        subdirectory in the state directory based on the engine
     :return: a response object indicating success or failure
     """
     form = request.form
