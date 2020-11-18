@@ -1,9 +1,9 @@
 <p align="center"><img src="docs/_static/images/logo/light_landscape.png" width="400px"/></p>
 
-![GitHub](https://img.shields.io/github/license/uqtools/quickscope)
+[![GitHub](https://img.shields.io/github/license/uqtools/quickscope)](https://github.com/UQTools/quickscope/blob/master/LICENSE)
 ![Python](https://badgen.net/badge/Python/3.8/blue)
-![Build](https://github.com/UQTools/quickscope/workflows/CI/badge.svg) 
-![Read the Docs](https://img.shields.io/readthedocs/quickscope)
+[![Build](https://github.com/UQTools/quickscope/workflows/CI/badge.svg)](https://github.com/UQTools/quickscope/actions)
+[![Read the Docs](https://img.shields.io/readthedocs/quickscope)](https://quickscope.readthedocs.io/)
 
 ## Overview
 Quickscope is used to build [Gradescope](https://www.gradescope.com/) autograders with 
