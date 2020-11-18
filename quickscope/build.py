@@ -3,6 +3,10 @@ from subprocess import run, PIPE
 
 
 def build() -> None:
+    """
+    Installs front-end dependencies and builds the front-end using yarn, which must already be
+    installed.
+    """
     install = run(["yarn", "install"],
                   stdout=PIPE,
                   text=True,

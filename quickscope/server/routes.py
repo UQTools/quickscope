@@ -13,18 +13,18 @@ def home() -> str:
     """
     Serve the React front end bundle.
 
-    :return: the rendered template of the React index.html page.
+    :return: the rendered template of the React index.html page
     """
     return render_template("index.html")
 
 
 @app.route("/generate", methods=["POST"])
-def generate():
+def generate() -> Response:
     """
     Generates the bundle based on the uploaded files and the configuration settings passed through
     in the form.
 
-    :return: a response that downloads the generated bundle to the client machine.
+    :return: a response that downloads the generated bundle to the client machine
     """
     form = request.form
     session_directory = Path(f"state/{form.get('session')}")
@@ -44,11 +44,12 @@ def generate():
 @app.route("/upload/<component>", methods=["POST"])
 def upload_locations(component: str) -> Response:
     """
-    Uploads a file to the correct location in the appropriate state directory
-    (based on the session id, the )
+    Uploads a file to the correct location in the appropriate state directory (based on the session
+    id and the component type).
+
     :param component: the component of the bundle that is being uploaded, this will determine the
-    subdirectory in the state directory based on the engine.
-    :return: a response object indicating success or failure.
+    subdirectory in the state directory based on the engine
+    :return: a response object indicating success or failure
     """
     form = request.form
     print(form.get("session"))

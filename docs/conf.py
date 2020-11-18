@@ -31,10 +31,10 @@ release = '0.1.0'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['recommonmark',
-              'sphinx.ext.autodoc',
+extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.coverage',
-              'sphinx_autodoc_typehints']
+              'sphinx_autodoc_typehints',
+              'm2r2']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -44,6 +44,10 @@ templates_path = ['_templates']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
+# source_parsers = {
+#    '.md': 'recommonmark.parser.CommonMarkParser',
+# }
+source_suffix = ['.rst', '.md']
 
 # -- Options for HTML output -------------------------------------------------
 

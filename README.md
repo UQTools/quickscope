@@ -1,4 +1,4 @@
-<p align="center"><img src="docs/_static/images/logo/light_landscape.png" width="400px"/></p>
+<p align="center"><img src="https://raw.githubusercontent.com/UQTools/quickscope/master/docs/_static/images/logo/light_landscape.png" width="400px"/></p>
 
 [![GitHub](https://img.shields.io/github/license/uqtools/quickscope)](https://github.com/UQTools/quickscope/blob/master/LICENSE)
 ![Python](https://badgen.net/badge/Python/3.8/blue)
@@ -18,7 +18,7 @@ public consumption.
 - Extensible engine system for introducing new languages and environments.
 - Dependency and environment management with [Poetry](https://python-poetry.org/).
 - A friendly web interface:
-![Interface](./docs/_static/images/quickscope_interface.png)
+![Interface](https://github.com/UQTools/quickscope/blob/master/docs/_static/images/quickscope_interface.png?raw=true)
 
 ### Build and Run
 Quickscope requires the Poetry dependency and environment management system as well as Python 3.8.

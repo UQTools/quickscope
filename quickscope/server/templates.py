@@ -79,6 +79,7 @@ def populate_config(config: Dict[str, Any],
     """
     Takes the user-provided configuration settings from the form and uses them to update the
     default values for the specified engine. User settings will override defaults.
+
     :param config: the basic settings common to all configurations: course code, assignment ID,
     engine, and session directory
     :param form: the form (immutable dictionary) attached to the Flask request containing the
