@@ -25,11 +25,13 @@ class Header extends Component {
                             spacing={24}
                         >
                             <Grid item>
-                                <img src="public/dark_landscape.png" alt="logo" height={"40px"}/>
+                                <Button color="inherit" href="/">
+                                    <img src="public/dark_landscape.png" alt="logo" height={"40px"}/>
+                                </Button>
                             </Grid>
                             <Grid item>
                                 <Button color="inherit" href="https://quickscope.readthedocs.io/en/latest/">
-                                    <img src="public/rtd.png" alt="rtd" height={"30px"}/>
+                                    <img src="public/rtd.png" alt="rtd" height={"34px"}/>
                                 </Button>
                             </Grid>
                         </Grid>
