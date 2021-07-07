@@ -96,6 +96,38 @@ public void toStringTest() {
 }
 ```
 
+#### Test Weightings
+
+Weightings can be used to allocate more marks to a particular unit test where
+it is deemed necessary.
+
+The weighting of each individual JUnit test can be modified by adding the
+`timeout` parameter to the `@Test` annotation. Weightings are integers between
+one and nine inclusive, representing a weighting of one and nine times the
+regular test weighting respectively.
+
+When including the `timeout` parameter of a test to specify a weighting, it is
+recommended to add a sufficiently large value such that the test does not
+actually time out for the given weighting, such as one million milliseconds.
+
+For example, to give a test a weighting of three times the regular weighting:
+```java
+@Test(timeout = 1000000 + 3)
+public void hashCodeTest() {
+    assertEquals(a.hashCode(), b.hashCode());
+}
+```
+
+Note that the recommended approach to adding timeouts to tests is to use a
+class-wide timeout rule as shown below.
+```java
+public class MyTest {
+    @Rule
+    public Timeout timeout = Timeout.seconds(1);
+    
+    ...
+```
+
 ### Conformance
 
 After enabling the conformance stage by clicking the checkbox under Java Engine
